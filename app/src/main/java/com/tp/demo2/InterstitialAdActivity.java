@@ -1,6 +1,7 @@
 package com.tp.demo2;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -9,14 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
-import com.tradplus.ads.open.LoadAdEveryLayerListener;
 import com.tradplus.ads.open.interstitial.InterstitialAdListener;
 import com.tradplus.ads.open.interstitial.TPInterstitial;
 
 public class InterstitialAdActivity extends AppCompatActivity {
-    private static final String EVERY_LAYER_SUBTAG = "Interstitial";
-    private static final String AD_TYPE_LABEL = "插屏";
-
     private TPInterstitial tpInterstitial;
 
     @Override
@@ -78,59 +75,8 @@ public class InterstitialAdActivity extends AppCompatActivity {
                 // Optional callback in newer SDK versions.
             }
         });
-        tpInterstitial.setAllAdLoadListener(createEveryLayerLoadListener());
-    }
-
-    private LoadAdEveryLayerListener createEveryLayerLoadListener() {
-        return new LoadAdEveryLayerListener() {
-            @Override
-            public void onAdAllLoaded(boolean isSuccess) {
-                String msg = "[" + AD_TYPE_LABEL + "] 瀑布流结束，是否有可用广告: " + isSuccess;
-                DemoAdLog.tradpluslog(EVERY_LAYER_SUBTAG, msg);
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void oneLayerLoadFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
-                String err = tpAdError != null ? tpAdError.getErrorMsg() : "null";
-                DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] oneLayerLoadFailed err=" + err + " adInfo=" + tpAdInfo);
-            }
-
-            @Override
-            public void oneLayerLoaded(TPAdInfo tpAdInfo) {
-                DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] oneLayerLoaded adInfo=" + tpAdInfo);
-            }
-
-            @Override
-            public void onAdStartLoad(String adUnitId) {
-                DemoAdLog.tradpluslog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onAdStartLoad adUnitId=" + adUnitId);
-            }
-
-            @Override
-            public void oneLayerLoadStart(TPAdInfo tpAdInfo) {
-                DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] oneLayerLoadStart adInfo=" + tpAdInfo);
-            }
-
-            @Override
-            public void onBiddingStart(TPAdInfo tpAdInfo) {
-                DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onBiddingStart adInfo=" + tpAdInfo);
-            }
-
-            @Override
-            public void onBiddingEnd(TPAdInfo tpAdInfo, TPAdError tpAdError) {
-                if (tpAdError != null) {
-                    DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onBiddingEnd failed err=" + tpAdError.getErrorMsg()
-                            + " adInfo=" + tpAdInfo);
-                } else {
-                    DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onBiddingEnd success adInfo=" + tpAdInfo);
-                }
-            }
-
-            @Override
-            public void onAdIsLoading(String adUnitId) {
-                DemoAdLog.tradpluslog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onAdIsLoading adUnitId=" + adUnitId);
-            }
-        };
+        tpInterstitial.setAllAdLoadListener(
+                EveryLayerLoadListenerHelper.create(this, "TPDemo/InterstitialEveryLayer", "插屏"));
     }
 
     private void checkAdFill() {

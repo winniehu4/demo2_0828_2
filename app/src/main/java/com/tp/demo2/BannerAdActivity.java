@@ -1,6 +1,7 @@
 package com.tp.demo2;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -10,14 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
-import com.tradplus.ads.open.LoadAdEveryLayerListener;
 import com.tradplus.ads.open.banner.BannerAdListener;
 import com.tradplus.ads.open.banner.TPBanner;
 
 public class BannerAdActivity extends AppCompatActivity {
-    private static final String EVERY_LAYER_SUBTAG = "Banner";
-    private static final String AD_TYPE_LABEL = "横幅";
-
     private TPBanner tpBanner;
     private FrameLayout adContainer;
 
@@ -67,69 +64,8 @@ public class BannerAdActivity extends AppCompatActivity {
             }
         });
 
-        tpBanner.setAllAdLoadListener(createEveryLayerLoadListener());
-    }
-
-    private LoadAdEveryLayerListener createEveryLayerLoadListener() {
-        return new LoadAdEveryLayerListener() {
-            @Override
-            public void onAdAllLoaded(boolean isSuccess) {
-                String msg = "[" + AD_TYPE_LABEL + "] 瀑布流结束，是否有可用广告: " + isSuccess;
-                DemoAdLog.tradpluslog(EVERY_LAYER_SUBTAG, msg);
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void oneLayerLoadFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
-                String err = tpAdError != null ? tpAdError.getErrorMsg() : "null";
-                DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] oneLayerLoadFailed err=" + err + " adInfo=" + tpAdInfo);
-            }
-
-            @Override
-            public void oneLayerLoaded(TPAdInfo tpAdInfo) {
-                if (tpAdInfo == null) {
-                    DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] oneLayerLoaded tpAdInfo is null");
-                    return;
-                }
-                String brief = String.format("adSource=%s, ecpm=%s, precision=%s, unitId=%s",
-                        tpAdInfo.adSourceName,
-                        tpAdInfo.ecpm,
-                        tpAdInfo.ecpmPrecision,
-                        tpAdInfo.adUnitId
-                );
-                DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] oneLayerLoaded " + brief);
-            }
-
-            @Override
-            public void onAdStartLoad(String adUnitId) {
-                DemoAdLog.tradpluslog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onAdStartLoad adUnitId=" + adUnitId);
-            }
-
-            @Override
-            public void oneLayerLoadStart(TPAdInfo tpAdInfo) {
-                DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] oneLayerLoadStart adInfo=" + tpAdInfo);
-            }
-
-            @Override
-            public void onBiddingStart(TPAdInfo tpAdInfo) {
-                DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onBiddingStart adInfo=" + tpAdInfo);
-            }
-
-            @Override
-            public void onBiddingEnd(TPAdInfo tpAdInfo, TPAdError tpAdError) {
-                if (tpAdError != null) {
-                    DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onBiddingEnd failed err=" + tpAdError.getErrorMsg()
-                            + " adInfo=" + tpAdInfo);
-                } else {
-                    DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onBiddingEnd success adInfo=" + tpAdInfo);
-                }
-            }
-
-            @Override
-            public void onAdIsLoading(String adUnitId) {
-                DemoAdLog.tradpluslog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onAdIsLoading adUnitId=" + adUnitId);
-            }
-        };
+        tpBanner.setAllAdLoadListener(
+                EveryLayerLoadListenerHelper.create(this, "TPDemo/BannerEveryLayer", "横幅"));
     }
     //点击load按钮执行
     private void loadBanner() {

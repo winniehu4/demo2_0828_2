@@ -14,14 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
 import com.tradplus.ads.base.bean.TPBaseAd;
-import com.tradplus.ads.open.LoadAdEveryLayerListener;
 import com.tradplus.ads.open.nativead.NativeAdListener;
 import com.tradplus.ads.open.nativead.TPNative;
 
+
+
 public class NativeAdActivity extends AppCompatActivity {
     private static final String TAG = "NativeAdActivity";
-    private static final String EVERY_LAYER_SUBTAG = "Native";
-    private static final String AD_TYPE_LABEL = "原生";
     private TPNative tpNative;
     private FrameLayout adContainer;
 
@@ -75,60 +74,9 @@ public class NativeAdActivity extends AppCompatActivity {
                 toast("Native closed");
             }
         });
-        tpNative.setAllAdLoadListener(createEveryLayerLoadListener());
+        tpNative.setAllAdLoadListener(
+                EveryLayerLoadListenerHelper.create(this, "TPDemo/NativeEveryLayer", "原生"));
         tpNative.entryAdScenario("54CA98771B77F6");
-    }
-
-    private LoadAdEveryLayerListener createEveryLayerLoadListener() {
-        return new LoadAdEveryLayerListener() {
-            @Override
-            public void onAdAllLoaded(boolean isSuccess) {
-                String msg = "[" + AD_TYPE_LABEL + "] 瀑布流结束，是否有可用广告: " + isSuccess;
-                DemoAdLog.tradpluslog(EVERY_LAYER_SUBTAG, msg);
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void oneLayerLoadFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
-                String err = tpAdError != null ? tpAdError.getErrorMsg() : "null";
-                DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] oneLayerLoadFailed err=" + err + " adInfo=" + tpAdInfo);
-            }
-
-            @Override
-            public void oneLayerLoaded(TPAdInfo tpAdInfo) {
-                DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] oneLayerLoaded adInfo=" + tpAdInfo);
-            }
-
-            @Override
-            public void onAdStartLoad(String adUnitId) {
-                DemoAdLog.tradpluslog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onAdStartLoad adUnitId=" + adUnitId);
-            }
-
-            @Override
-            public void oneLayerLoadStart(TPAdInfo tpAdInfo) {
-                DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] oneLayerLoadStart adInfo=" + tpAdInfo);
-            }
-
-            @Override
-            public void onBiddingStart(TPAdInfo tpAdInfo) {
-                DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onBiddingStart adInfo=" + tpAdInfo);
-            }
-
-            @Override
-            public void onBiddingEnd(TPAdInfo tpAdInfo, TPAdError tpAdError) {
-                if (tpAdError != null) {
-                    DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onBiddingEnd failed err=" + tpAdError.getErrorMsg()
-                            + " adInfo=" + tpAdInfo);
-                } else {
-                    DemoAdLog.mylog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onBiddingEnd success adInfo=" + tpAdInfo);
-                }
-            }
-
-            @Override
-            public void onAdIsLoading(String adUnitId) {
-                DemoAdLog.tradpluslog(EVERY_LAYER_SUBTAG, "[" + AD_TYPE_LABEL + "] onAdIsLoading adUnitId=" + adUnitId);
-            }
-        };
     }
 
 
