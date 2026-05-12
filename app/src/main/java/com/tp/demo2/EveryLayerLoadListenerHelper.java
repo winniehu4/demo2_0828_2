@@ -12,58 +12,66 @@ import com.tradplus.ads.open.LoadAdEveryLayerListener;
  * Demo implementation of {@link LoadAdEveryLayerListener} (per-source / waterfall load callbacks).
  */
 public final class EveryLayerLoadListenerHelper {
-
+    private static final String LOG= "myLog";
     private EveryLayerLoadListenerHelper() {
     }
 
     public static LoadAdEveryLayerListener create(Context context, String logTag, String adTypeLabel) {
         return new LoadAdEveryLayerListener() {
+
+            /*
+             整个瀑布流全部加载结束（最终是否有广告）
+             */
             @Override
             public void onAdAllLoaded(boolean isSuccess) {
-                String msg = "[" + adTypeLabel + "] 瀑布流结束，是否有可用广告: " + isSuccess;
-                Log.d(logTag, msg);
-                Toast.makeText(context.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+
+                Log.v(LOG, "onAdAllLoaded: 该广告位下所有广告加载结束，是否有广告加载成功 ：" + isSuccess);
+
             }
 
             @Override
             public void oneLayerLoadFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
-                String err = tpAdError != null ? tpAdError.getErrorMsg() : "null";
-                Log.d(logTag, "[" + adTypeLabel + "] oneLayerLoadFailed err=" + err + " adInfo=" + tpAdInfo);
+                // 错误码 + 错误信息 + 广告源ID
+                Log.v(LOG, "oneLayerLoadFailed【广告源：" + tpAdInfo.adSourceName + "，中介组id：" + tpAdInfo.segmentId + "，加载失败，code :: " +
+                        tpAdError.getErrorCode() + " , Msg :: " + tpAdError.getErrorMsg() + "】");
+
             }
 
             @Override
             public void oneLayerLoaded(TPAdInfo tpAdInfo) {
-                Log.d(logTag, "[" + adTypeLabel + "] oneLayerLoaded adInfo=" + tpAdInfo);
+                Log.v(LOG, "oneLayer，ecpmLevel: " + tpAdInfo.ecpmLevel + "，" + tpAdInfo.adSourceName + "加载成功" + "，ecpm：" + tpAdInfo.ecpm);
+                Log.v(LOG, "oneLayerLoaded【广告源：" + tpAdInfo.adSourceName + "，中介组id：" + tpAdInfo.segmentId  + "】");
+
             }
 
             @Override
             public void onAdStartLoad(String adUnitId) {
-                Log.d(logTag, "[" + adTypeLabel + "] onAdStartLoad adUnitId=" + adUnitId);
+
             }
 
             @Override
             public void oneLayerLoadStart(TPAdInfo tpAdInfo) {
-                Log.d(logTag, "[" + adTypeLabel + "] oneLayerLoadStart adInfo=" + tpAdInfo);
+
             }
 
             @Override
             public void onBiddingStart(TPAdInfo tpAdInfo) {
-                Log.d(logTag, "[" + adTypeLabel + "] onBiddingStart adInfo=" + tpAdInfo);
+                Log.v(LOG, "onBiddingStart【广告源：" + tpAdInfo.adSourceName + "，中介组id：" + tpAdInfo.segmentId  +
+                        "】");
+
             }
 
             @Override
             public void onBiddingEnd(TPAdInfo tpAdInfo, TPAdError tpAdError) {
-                if (tpAdError != null) {
-                    Log.d(logTag, "[" + adTypeLabel + "] onBiddingEnd failed err=" + tpAdError.getErrorMsg()
-                            + " adInfo=" + tpAdInfo);
-                } else {
-                    Log.d(logTag, "[" + adTypeLabel + "] onBiddingEnd success adInfo=" + tpAdInfo);
-                }
+                Log.v(LOG, "onBiddingEnd【广告源：" + tpAdInfo.adSourceName + "，中介组id：" + tpAdInfo.segmentId + "，code :: " +
+                        tpAdError.getErrorCode() + " , Msg :: " + tpAdError.getErrorMsg() + "】");
+
             }
 
             @Override
             public void onAdIsLoading(String adUnitId) {
-                Log.d(logTag, "[" + adTypeLabel + "] onAdIsLoading adUnitId=" + adUnitId);
+                Log.v(LOG, "onAdIsLoading【" + adUnitId + "】");
+
             }
         };
     }

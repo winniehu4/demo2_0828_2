@@ -14,10 +14,12 @@ import com.tradplus.ads.open.reward.TPReward;
 
 public class RewardedAdActivity extends AppCompatActivity {
     private TPReward tpReward;
-
+    private static final String LOG= "myLog";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.v(LOG, "========== RewardedAdActivity 已启动 ==========");
         setContentView(R.layout.activity_rewarded_ad);
 
         Button btnLoad = findViewById(R.id.btn_load);
@@ -33,9 +35,13 @@ public class RewardedAdActivity extends AppCompatActivity {
 
     private void initRewarded() {
         tpReward = new TPReward(RewardedAdActivity.this, AdIds.REWARDED_AD_UNIT_ID);
+        Log.v(LOG, " ========== 广告对象已创建 ==========");
         tpReward.setAdListener(new RewardAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
+
+                Log.v(LOG, "onAdLoaded【广告源："+ tpAdInfo.adSourceName + "，ecpm：" + tpAdInfo.ecpm + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "'中介组id："+ tpAdInfo.segmentId + "】");
+
                 toast("Rewarded loaded");
             }
 
@@ -46,16 +52,24 @@ public class RewardedAdActivity extends AppCompatActivity {
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
+
+                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "，tp.ecpm: "  + tpAdInfo.ecpm + "，广告类型：" + tpAdInfo.format +  "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
+                Log.v(LOG, "onAdImpression【广告源ID："+ tpAdInfo.adSourceId+ "】");
                 toast("Rewarded impression");
             }
 
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
+
+                Log.v(LOG, "onAdClicked【广告源："+ tpAdInfo.adSourceName + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
                 toast("Rewarded clicked");
             }
 
             @Override
             public void onAdClosed(TPAdInfo tpAdInfo) {
+
+
+                Log.v(LOG, "onAdClosed【广告源："+ tpAdInfo.adSourceName + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
                 toast("Rewarded closed");
             }
 
@@ -86,9 +100,9 @@ public class RewardedAdActivity extends AppCompatActivity {
     private void checkAdFill() {
         // 替换成你的激励视频对象：tpRewardedAd
         if (tpReward != null && tpReward.isReady()) {
-            toast("✅ 激励视频有填充，可以展示");
+            toast("激励视频有填充，可以展示");
         } else {
-            toast("❌ 激励视频无填充/未加载完成");
+            toast("激励视频无填充/未加载完成");
         }
     }
 

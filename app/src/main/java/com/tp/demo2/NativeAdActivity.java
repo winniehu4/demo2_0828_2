@@ -23,10 +23,13 @@ public class NativeAdActivity extends AppCompatActivity {
     private static final String TAG = "NativeAdActivity";
     private TPNative tpNative;
     private FrameLayout adContainer;
-
+    private static final String LOG= "myLog";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.v(LOG, "========== NativeAdActivity 已启动 ==========");
+
         setContentView(R.layout.activity_native_ad);
 
         adContainer = findViewById(R.id.ad_container);
@@ -43,24 +46,34 @@ public class NativeAdActivity extends AppCompatActivity {
 
     private void initNative() {
         tpNative = new TPNative(NativeAdActivity.this, AdIds.NATIVE_AD_UNIT_ID);
+        Log.v(LOG, " ========== 广告对象已创建 ==========");
         tpNative.setAdListener(new NativeAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
+
+                Log.v(LOG, "onAdLoaded【广告源："+ tpAdInfo.adSourceName + "，ecpm：" + tpAdInfo.ecpm + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "'中介组id："+ tpAdInfo.segmentId + "】");
+
                 toast("Native loaded");
             }
 
             @Override
             public void onAdLoadFailed(TPAdError tpAdError) {
+                Log.v(LOG, "onAdFailed【code : "+ tpAdError.getErrorCode() + ", msg :" + tpAdError.getErrorMsg() + "】");
                 toast("Native load failed: " + tpAdError.getErrorCode() + " " + tpAdError.getErrorMsg());
             }
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
+
+                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "，tp.ecpm: "  + tpAdInfo.ecpm + "，广告类型：" + tpAdInfo.format  + "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
+                Log.v(LOG, "onAdImpression【广告源ID："+ tpAdInfo.adSourceId+ "】");
                 toast("Native impression");
             }
 
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
+
+                Log.v(LOG, "onAdClicked【广告源："+ tpAdInfo.adSourceName + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
                 toast("Native clicked");
             }
 
@@ -71,6 +84,8 @@ public class NativeAdActivity extends AppCompatActivity {
 
             @Override
             public void onAdClosed(TPAdInfo tpAdInfo) {
+                Log.v(LOG, "onAdClosed【广告源："+ tpAdInfo.adSourceName + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
+
                 toast("Native closed");
             }
         });
@@ -83,9 +98,9 @@ public class NativeAdActivity extends AppCompatActivity {
     private void checkAdFill() {
         // 替换成你的原生广告对象：tpNativeAd
         if (tpNative != null && tpNative.isReady()) {
-            toast("✅ 原生广告有填充，可以展示");
+            toast("原生广告有填充，可以展示");
         } else {
-            toast("❌ 原生广告无填充/未加载完成");
+            toast("原生广告无填充/未加载完成");
         }
     }
 

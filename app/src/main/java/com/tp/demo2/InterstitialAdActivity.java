@@ -15,10 +15,13 @@ import com.tradplus.ads.open.interstitial.TPInterstitial;
 
 public class InterstitialAdActivity extends AppCompatActivity {
     private TPInterstitial tpInterstitial;
-
+    private static final String LOG = "myLog";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.v(LOG, "========== InterstitialAdActivity 已启动 ==========");
+
         setContentView(R.layout.activity_interstitial_ad);
 
         Button btnLoad = findViewById(R.id.btn_load);
@@ -34,29 +37,48 @@ public class InterstitialAdActivity extends AppCompatActivity {
 
     private void initInterstitial() {
         tpInterstitial = new TPInterstitial(InterstitialAdActivity.this, AdIds.INTERSTITIAL_AD_UNIT_ID);
+        Log.v(LOG, " ========== 广告对象已创建 ==========");
         tpInterstitial.setAdListener(new InterstitialAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo) {
+
+                Log.v(LOG, "onAdLoaded【广告源："+ tpAdInfo.adSourceName + "，ecpm：" + tpAdInfo.ecpm + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "'中介组id："+ tpAdInfo.segmentId + "】");
+
+
                 toast("Interstitial loaded");
             }
 
             @Override
             public void onAdFailed(TPAdError error) {
+                Log.v(LOG, "onAdFailed【code : "+ error.getErrorCode() + ", msg :" + error.getErrorMsg() + "】");
                 toast("Interstitial load failed: " + error.getErrorMsg());
             }
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
+
+                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "，tp.ecpm: "  + tpAdInfo.ecpm + "，广告类型：" + tpAdInfo.format +  "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
+                Log.v(LOG, "onAdImpression【广告源ID："+ tpAdInfo.adSourceId+ "】");
+
+
                 toast("Interstitial impression");
             }
 
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
+
+                Log.v(LOG, "onAdClicked【广告源："+ tpAdInfo.adSourceName + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
+
+
                 toast("Interstitial clicked");
             }
 
             @Override
             public void onAdClosed(TPAdInfo tpAdInfo) {
+
+                Log.v(LOG, "onAdClosed【广告源："+ tpAdInfo.adSourceName + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
+
+
                 toast("Interstitial closed");
             }
 
@@ -79,11 +101,12 @@ public class InterstitialAdActivity extends AppCompatActivity {
                 EveryLayerLoadListenerHelper.create(this, "TPDemo/InterstitialEveryLayer", "插屏"));
     }
 
+
     private void checkAdFill() {
         if (tpInterstitial != null && tpInterstitial.isReady()) {
-            toast("✅ 插屏广告有填充，可以展示");
+            toast("插屏广告有填充，可以展示");
         } else {
-            toast("❌ 插屏广告无填充/未加载完成");
+            toast("插屏广告无填充/未加载完成");
         }
     }
 
