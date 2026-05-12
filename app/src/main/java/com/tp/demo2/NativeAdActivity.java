@@ -16,7 +16,9 @@ import com.tradplus.ads.base.bean.TPAdInfo;
 import com.tradplus.ads.base.bean.TPBaseAd;
 import com.tradplus.ads.open.nativead.NativeAdListener;
 import com.tradplus.ads.open.nativead.TPNative;
-
+import java.util.HashMap;                          // 新增导入
+import java.util.Map;                              // 新增导入
+import com.tradplus.ads.open.TradPlusSdk;          // 新增导入
 
 
 public class NativeAdActivity extends AppCompatActivity {
@@ -37,12 +39,27 @@ public class NativeAdActivity extends AppCompatActivity {
         Button btnCheck = findViewById(R.id.btn_check);
         Button btnShow = findViewById(R.id.btn_show);
 
+        // ===== 关键：在这里调用关闭自动加载，必须在initNative()之前 =====
+               // disableAutoLoadForNativeAd();
+
         initNative();
 
         btnLoad.setOnClickListener(v -> tpNative.loadAd());
         btnCheck.setOnClickListener(v -> checkAdFill());
-        btnShow.setOnClickListener(v -> showNative());
-    }
+        btnShow.setOnClickListener(v -> showNative());}
+
+
+
+        // 新增：关闭自动加载的方法
+       /* private void disableAutoLoadForNativeAd() {
+            Map<String, Object> settingParam = new HashMap<>();
+            // 把你的原生广告位ID放进数组里
+            String[] unitIds = {AdIds.NATIVE_AD_UNIT_ID};
+            settingParam.put("autoload_close", unitIds);
+            TradPlusSdk.setSettingDataParam(settingParam);
+            Log.v(LOG, "========== 已为广告位关闭自动加载 ==========");
+        }
+*/
 
     private void initNative() {
         tpNative = new TPNative(NativeAdActivity.this, AdIds.NATIVE_AD_UNIT_ID);
@@ -58,7 +75,7 @@ public class NativeAdActivity extends AppCompatActivity {
 
             @Override
             public void onAdLoadFailed(TPAdError tpAdError) {
-                Log.v(LOG, "onAdFailed【code : "+ tpAdError.getErrorCode() + ", msg :" + tpAdError.getErrorMsg() + "】");
+                Log.v(LOG, "onAdLoadFailed【code : "+ tpAdError.getErrorCode() + ", msg :" + tpAdError.getErrorMsg() + "】");
                 toast("Native load failed: " + tpAdError.getErrorCode() + " " + tpAdError.getErrorMsg());
             }
 
@@ -110,7 +127,7 @@ public class NativeAdActivity extends AppCompatActivity {
         if (tpNative.isReady()) {
             adContainer.removeAllViews();
             logTemplateValidation();
-            tpNative.showAd(adContainer, R.layout.tp_native_ad_list_item, "");
+            tpNative.showAd(adContainer, R.layout.tp_native_ad_list_item, "54CA98771B77F6");
         } else {
             toast("Native not ready");
         }

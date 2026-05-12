@@ -10,8 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
+import com.tradplus.ads.open.TradPlusSdk;
 import com.tradplus.ads.open.interstitial.InterstitialAdListener;
 import com.tradplus.ads.open.interstitial.TPInterstitial;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class InterstitialAdActivity extends AppCompatActivity {
     private TPInterstitial tpInterstitial;
@@ -28,11 +32,23 @@ public class InterstitialAdActivity extends AppCompatActivity {
         Button btnShow = findViewById(R.id.btn_show);
         Button btnCheck = findViewById(R.id.btn_check);
 
-
+        // ===== 关键：在这里调用关闭自动加载，必须在initNative()之前 =====
+        disableAutoLoadForInterstitialAd();
         initInterstitial();
         btnLoad.setOnClickListener(v -> tpInterstitial.loadAd());
         btnCheck.setOnClickListener(v -> checkAdFill());
         btnShow.setOnClickListener(v -> showInterstitial());
+    }
+
+
+    // 新增：关闭自动加载的方法
+    private void disableAutoLoadForInterstitialAd() {
+        Map<String, Object> settingParam = new HashMap<>();
+        // 把你的原生广告位ID放进数组里
+        String[] unitIds = {AdIds.NATIVE_AD_UNIT_ID};
+        settingParam.put("autoload_close", unitIds);
+        TradPlusSdk.setSettingDataParam(settingParam);
+        Log.v(LOG, "========== 已为广告位关闭自动加载 ==========");
     }
 
     private void initInterstitial() {

@@ -47,6 +47,7 @@ public final class EveryLayerLoadListenerHelper {
             @Override
             public void onAdStartLoad(String adUnitId) {
 
+                Log.v(LOG, "onAdStartLoad【广告位ID：" + adUnitId + "】");
             }
 
             @Override
