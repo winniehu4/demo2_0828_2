@@ -60,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
         btnNative.setOnClickListener(v -> startActivity(new Intent(this, NativeAdActivity.class)));
         btnInterstitial.setOnClickListener(v -> startActivity(new Intent(this, InterstitialAdActivity.class)));
         btnReward.setOnClickListener(v -> startActivity(new Intent(this, RewardedAdActivity.class)));
-        btnSplash.setOnClickListener(v -> startActivity(new Intent(this, SplashAdActivity.class)));
+        btnSplash.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SplashAdActivity.class);
+            intent.putExtra(SplashAdActivity.EXTRA_MANUAL_DEMO, true);
+            startActivity(intent);
+        });
     }
 }

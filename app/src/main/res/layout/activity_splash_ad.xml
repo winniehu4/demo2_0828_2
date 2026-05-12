@@ -6,6 +6,7 @@
     android:padding="16dp">
 
     <TextView
+        android:id="@+id/tv_splash_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Splash Demo"
@@ -13,6 +14,7 @@
         android:textStyle="bold" />
 
     <LinearLayout
+        android:id="@+id/layout_splash_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"

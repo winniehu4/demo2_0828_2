@@ -38,6 +38,10 @@
 
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".SplashAdActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,7 +53,6 @@
         <activity android:name=".NativeAdActivity" />
         <activity android:name=".InterstitialAdActivity" />
         <activity android:name=".RewardedAdActivity" />
-        <activity android:name=".SplashAdActivity" />
     </application>
 
 </manifest>
