@@ -21,8 +21,10 @@ public class SplashAdActivity extends AppCompatActivity {
     private boolean isHotStartSplash = true;      // 热启动开关
     private boolean hasShownHotStartAd = false;   // 本次热启动是否已展示过广告
     private boolean isLoading = false;            // 是否正在加载广告
-    private boolean isAdShowing = false;           // 当前是否有广告正在展示
-    private long lastShowTime = 0;                // 防止短时间内多次展示（SDK内部也可能连续触发）
+    private boolean isAdShowing = false;          // 当前是否有广告正在展示
+    private long lastShowTime = 0;                // 防止短时间内多次展示
+    private boolean isColdStart;                  // 是否为冷启动（进程首次启动）
+
     private static final String LOG = "myLog";
 
     @Override
@@ -30,6 +32,9 @@ public class SplashAdActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.v(LOG, "========== SplashAdActivity 已启动 ==========");
         setContentView(R.layout.activity_splash_ad);
+
+        // 通过 savedInstanceState 判断冷启动（首次创建且无保存状态）
+        isColdStart = (savedInstanceState == null);
 
         adContainer = findViewById(R.id.ad_container);
         Button btnLoad = findViewById(R.id.btn_load);
@@ -49,6 +54,15 @@ public class SplashAdActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        // 冷启动时不展示广告，并重置标志，后续热启动可正常展示
+        if (isColdStart) {
+            Log.v(LOG, "冷启动：不展示广告");
+            isColdStart = false;   // 仅跳过本次，下次 onStart 视为热启动
+            return;
+        }
+
+        // 热启动展示逻辑（原有逻辑，保持不变）
         if (isHotStartSplash
                 && !hasShownHotStartAd
                 && tpSplash != null
@@ -119,14 +133,12 @@ public class SplashAdActivity extends AppCompatActivity {
                 isAdShowing = false;
                 adContainer.removeAllViews();
 
-                // 🔥 关键修改：广告关闭后立刻销毁对象，丢弃队列中剩余广告
-                // 然后重建并预加载下一个，保证下次展示只有 1 个广告
+                // 销毁旧广告对象，丢弃可能剩余的广告（如果有）
                 if (tpSplash != null) {
                     tpSplash.onDestroy();
                 }
+                // 重建对象，但此时不自动加载广告（满足“关闭广告不自动加载”）
                 initSplash();
-                // 只预加载，不自动展示，等待热启动或手动点击
-                loadSplashAd();
             }
 
             @Override
@@ -179,7 +191,7 @@ public class SplashAdActivity extends AppCompatActivity {
             Log.v(LOG, "已有广告正在展示，忽略本次展示请求");
             return;
         }
-        // 防抖：短时间内的重复调用忽略（针对 SDK 内部可能的连续回调）
+        // 防抖：短时间内的重复调用忽略
         if (System.currentTimeMillis() - lastShowTime < 2000) {
             Log.v(LOG, "展示间隔过短，忽略重复请求");
             return;

@@ -41,11 +41,11 @@ public class InterstitialAdActivity extends AppCompatActivity {
     }
 
 
-    // 新增：关闭自动加载的方法
+    // 新增：关闭自动加载的方法，建议在MainActivity里关，初始化之前就关
     private void disableAutoLoadForInterstitialAd() {
         Map<String, Object> settingParam = new HashMap<>();
         // 把你的原生广告位ID放进数组里
-        String[] unitIds = {AdIds.NATIVE_AD_UNIT_ID};
+        String[] unitIds = {AdIds.INTERSTITIAL_AD_UNIT_ID};
         settingParam.put("autoload_close", unitIds);
         TradPlusSdk.setSettingDataParam(settingParam);
         Log.v(LOG, "========== 已为广告位关闭自动加载 ==========");
