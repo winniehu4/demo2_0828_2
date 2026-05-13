@@ -1,212 +1,195 @@
 package com.tp.demo2;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
 import com.tradplus.ads.base.bean.TPBaseAd;
-import com.tradplus.ads.open.TradPlusSdk;
 import com.tradplus.ads.open.splash.SplashAdListener;
 import com.tradplus.ads.open.splash.TPSplash;
 
 public class SplashAdActivity extends AppCompatActivity {
-    public static final String EXTRA_MANUAL_DEMO = "extra_manual_demo";
-
     private TPSplash tpSplash;
     private FrameLayout adContainer;
+    private boolean isHotStartSplash = true;      // 热启动开关
+    private boolean hasShownHotStartAd = false;   // 本次热启动是否已展示过广告
+    private boolean isLoading = false;            // 是否正在加载广告
+    private boolean isAdShowing = false;           // 当前是否有广告正在展示
+    private long lastShowTime = 0;                // 防止短时间内多次展示（SDK内部也可能连续触发）
     private static final String LOG = "myLog";
-    private static final String TAG = "TradPlusDemo";
-    private static final String TRADPLUS_APP_ID = "0513C4B3D2C5B3F8EB5CF572B79DF811";
-    private static final long COLD_START_LOAD_TIMEOUT_MS = 15_000;
-
-    private boolean manualDemoMode;
-    private boolean navigatedToMain;
-    private final Handler mainHandler = new Handler(Looper.getMainLooper());
-    private Runnable coldStartTimeoutRunnable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(LOG, "========== SplashAdActivity 已启动 ==========");
-
-        manualDemoMode = getIntent().getBooleanExtra(EXTRA_MANUAL_DEMO, false);
-
         setContentView(R.layout.activity_splash_ad);
 
         adContainer = findViewById(R.id.ad_container);
         Button btnLoad = findViewById(R.id.btn_load);
         Button btnCheck = findViewById(R.id.btn_check);
         Button btnShow = findViewById(R.id.btn_show);
-        View tvTitle = findViewById(R.id.tv_splash_title);
-        LinearLayout buttonRow = findViewById(R.id.layout_splash_buttons);
 
         initSplash();
 
-        if (manualDemoMode) {
-            tvTitle.setVisibility(View.VISIBLE);
-            buttonRow.setVisibility(View.VISIBLE);
-            btnLoad.setOnClickListener(v -> tpSplash.loadAd(null));
-            btnCheck.setOnClickListener(v -> checkAdFill());
-            btnShow.setOnClickListener(v -> showSplash());
-        } else {
-            tvTitle.setVisibility(View.GONE);
-            buttonRow.setVisibility(View.GONE);
-//            startColdStartSplash();
-        }
-
-        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if (manualDemoMode) {
-                    finish();
-                } else {
-                    goMainAndFinishColdStart();
-                }
-            }
+        btnLoad.setOnClickListener(v -> {
+            loadSplashAd();
+            toast("开始加载开屏广告");
         });
+        btnCheck.setOnClickListener(v -> checkAdFill());
+        btnShow.setOnClickListener(v -> showSplash());
     }
-   //冷启动代码：
-  /*  private void startColdStartSplash() {
-        coldStartTimeoutRunnable = () -> {
-            if (!manualDemoMode && !navigatedToMain) {
-                Log.w(LOG, "Cold start splash: load timeout, entering main");
-                goMainAndFinishColdStart();
-            }
-        };
-        mainHandler.postDelayed(coldStartTimeoutRunnable, COLD_START_LOAD_TIMEOUT_MS);
 
-        try {
-            TradPlusSdk.setTradPlusInitListener(new TradPlusSdk.TradPlusInitListener() {
-                @Override
-                public void onInitSuccess() {
-                    Log.d(TAG, "TradPlus SDK init success (cold start)");
-                    runOnUiThread(() -> {
-                        if (isFinishing() || navigatedToMain || manualDemoMode || tpSplash == null) {
-                            return;
-                        }
-                        tpSplash.loadAd(null);
-                    });
-                }
-            });
-            TradPlusSdk.initSdk(this, TRADPLUS_APP_ID);
-        } catch (Throwable t) {
-            Log.e(TAG, "TradPlus SDK init failed (cold start)", t);
-            Toast.makeText(this, "TradPlus init failed: " + t.getClass().getSimpleName(), Toast.LENGTH_LONG).show();
-            goMainAndFinishColdStart();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (isHotStartSplash
+                && !hasShownHotStartAd
+                && tpSplash != null
+                && tpSplash.isReady()
+                && !isAdShowing) {
+            Log.v(LOG, "热启动：广告已就绪，展示 1 次");
+            hasShownHotStartAd = true;
+            showSplash();
+        } else {
+            Log.v(LOG, "热启动：不展示广告（已展示过 / 无广告 / 正在展示 / 开关关闭）");
         }
-    }*/
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        hasShownHotStartAd = false;
+        if (isHotStartSplash
+                && tpSplash != null
+                && !tpSplash.isReady()
+                && !isLoading
+                && !isAdShowing) {
+            Log.v(LOG, "用户离开 APP，开始预加载开屏广告");
+            loadSplashAd();
+        }
+    }
 
     private void initSplash() {
         tpSplash = new TPSplash(SplashAdActivity.this, AdIds.SPLASH_AD_UNIT_ID);
-        Log.v(LOG, " ========== 广告对象已创建 ==========");
+        Log.v(LOG, "========== 广告对象已创建 ==========");
         tpSplash.setAdListener(new SplashAdListener() {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
-                Log.v(LOG, "onAdLoaded【广告源：" + tpAdInfo.adSourceName + "，ecpm：" + tpAdInfo.ecpm + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "'中介组id：" + tpAdInfo.segmentId + "】");
-
-                if (manualDemoMode) {
-                    toast("Splash loaded");
-                } else {
-                    showSplash();
-                }
+                isLoading = false;
+                Log.v(LOG, "onAdLoaded【广告源：" + tpAdInfo.adSourceName + "，ecpm：" + tpAdInfo.ecpm +
+                        "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId +
+                        "，中介组id：" + tpAdInfo.segmentId + "】");
+                toast("开屏广告加载成功");
             }
 
             @Override
             public void onAdLoadFailed(TPAdError error) {
-                if (manualDemoMode) {
-                    toast("Splash load failed: " + error.getErrorMsg());
-                } else {
-                    //Log.w(LOG, "Cold start splash load failed: " + error.getErrorMsg());
-//                    goMainAndFinishColdStart();
-                }
+                isLoading = false;
+                Log.e(LOG, "onAdLoadFailed: " + error.getErrorMsg());
+                toast("开屏广告加载失败：" + error.getErrorMsg());
             }
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
-                Log.v(LOG, "onAdImpression【广告源：" + tpAdInfo.adSourceName + "，tp.ecpm: " + tpAdInfo.ecpm + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
-                Log.v(LOG, "onAdImpression【广告源ID：" + tpAdInfo.adSourceId + "】");
-
-                if (manualDemoMode) {
-                    toast("Splash impression");
-                }
+                Log.v(LOG, "onAdImpression【广告源：" + tpAdInfo.adSourceName +
+                        "，ecpm：" + tpAdInfo.ecpm + "，广告类型：" + tpAdInfo.format +
+                        "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
+                toast("开屏广告展示");
             }
 
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
-                Log.v(LOG, "onAdClicked【广告源：" + tpAdInfo.adSourceName + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
-                if (manualDemoMode) {
-                    toast("Splash clicked");
-                }
+                Log.v(LOG, "onAdClicked【广告源：" + tpAdInfo.adSourceName +
+                        "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
+                toast("开屏广告点击");
             }
 
             @Override
             public void onAdClosed(TPAdInfo tpAdInfo) {
-                Log.v(LOG, "onAdClosed【广告源：" + tpAdInfo.adSourceName + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
-
-                if (manualDemoMode) {
-                    toast("Splash closed");
-                }
+                Log.v(LOG, "onAdClosed【广告源：" + tpAdInfo.adSourceName +
+                        "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
+                toast("开屏广告关闭");
+                isAdShowing = false;
                 adContainer.removeAllViews();
-                if (!manualDemoMode) {
-                    goMainAndFinishColdStart();
+
+                // 🔥 关键修改：广告关闭后立刻销毁对象，丢弃队列中剩余广告
+                // 然后重建并预加载下一个，保证下次展示只有 1 个广告
+                if (tpSplash != null) {
+                    tpSplash.onDestroy();
                 }
+                initSplash();
+                // 只预加载，不自动展示，等待热启动或手动点击
+                loadSplashAd();
             }
 
             @Override
             public void onAdShowFailed(TPAdInfo tpAdInfo, TPAdError error) {
-                if (manualDemoMode) {
-                    toast("Splash show failed: " + error.getErrorMsg());
-                } else {
-                    Log.w(LOG, "Cold start splash show failed: " + error.getErrorMsg());
-                    goMainAndFinishColdStart();
-                }
+                Log.e(LOG, "onAdShowFailed: " + error.getErrorMsg());
+                toast("开屏广告展示失败：" + error.getErrorMsg());
+                isAdShowing = false;
             }
         });
         tpSplash.setAllAdLoadListener(
                 EveryLayerLoadListenerHelper.create(this, "TPDemo/SplashEveryLayer", "开屏"));
     }
 
-    private void goMainAndFinishColdStart() {
-        if (manualDemoMode || navigatedToMain) {
+    private void loadSplashAd() {
+        if (tpSplash == null || isLoading) {
+            Log.v(LOG, "加载被跳过（对象为空或正在加载中）");
             return;
         }
-        navigatedToMain = true;
-        if (coldStartTimeoutRunnable != null) {
-            mainHandler.removeCallbacks(coldStartTimeoutRunnable);
-        }
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+        isLoading = true;
+        tpSplash.loadAd(null);
+        Log.v(LOG, "开始请求广告");
     }
 
     private void checkAdFill() {
         if (tpSplash != null && tpSplash.isReady()) {
             toast("开屏广告有填充，可以展示");
+            Log.v(LOG, "广告已就绪，isReady=true");
         } else {
             toast("开屏广告无填充/未加载完成");
+            Log.v(LOG, "广告未就绪");
         }
     }
 
     private void showSplash() {
-        if (tpSplash.isReady()) {
-            tpSplash.showAd(adContainer);
-        } else if (manualDemoMode) {
-            toast("Splash not ready");
-        } else {
-            goMainAndFinishColdStart();
+        if (tpSplash == null) {
+            toast("开屏对象为空");
+            return;
         }
+        if (!tpSplash.isReady()) {
+            toast("开屏广告未加载完成，请稍后");
+            Log.v(LOG, "showSplash失败：isReady=false");
+            return;
+        }
+        if (adContainer == null) {
+            toast("广告容器不存在");
+            Log.e(LOG, "adContainer 为 null");
+            return;
+        }
+        if (isAdShowing) {
+            Log.v(LOG, "已有广告正在展示，忽略本次展示请求");
+            return;
+        }
+        // 防抖：短时间内的重复调用忽略（针对 SDK 内部可能的连续回调）
+        if (System.currentTimeMillis() - lastShowTime < 2000) {
+            Log.v(LOG, "展示间隔过短，忽略重复请求");
+            return;
+        }
+
+        Log.v(LOG, "准备展示开屏广告，isReady=true");
+        isAdShowing = true;
+        lastShowTime = System.currentTimeMillis();
+        adContainer.removeAllViews();
+        tpSplash.showAd(adContainer);
     }
 
     private void toast(String text) {
@@ -215,9 +198,6 @@ public class SplashAdActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (coldStartTimeoutRunnable != null) {
-            mainHandler.removeCallbacks(coldStartTimeoutRunnable);
-        }
         super.onDestroy();
         if (tpSplash != null) {
             tpSplash.onDestroy();
