@@ -32,15 +32,14 @@ public final class EveryLayerLoadListenerHelper {
             @Override
             public void oneLayerLoadFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
                 // 错误码 + 错误信息 + 广告源ID
-                Log.v(LOG, "oneLayerLoadFailed【广告源：" + tpAdInfo.adSourceName + "，中介组id：" + tpAdInfo.segmentId + "，加载失败，code :: " +
+                Log.v(LOG, "oneLayerLoadFailed【广告源：" + tpAdInfo.adSourceName +",广告源id:"+tpAdInfo.adSourceId+ "，中介组id：" + tpAdInfo.segmentId + "，加载失败，code :: " +
                         tpAdError.getErrorCode() + " , Msg :: " + tpAdError.getErrorMsg() + "】");
 
             }
 
             @Override
             public void oneLayerLoaded(TPAdInfo tpAdInfo) {
-                Log.v(LOG, "oneLayer，ecpmLevel: " + tpAdInfo.ecpmLevel + "，" + tpAdInfo.adSourceName + "加载成功" + "，ecpm：" + tpAdInfo.ecpm);
-                Log.v(LOG, "oneLayerLoaded【广告源：" + tpAdInfo.adSourceName + "，中介组id：" + tpAdInfo.segmentId  + "】");
+                Log.v(LOG, "oneLayerLoaded【广告源：" + tpAdInfo.adSourceName + ",广告源id:"+tpAdInfo.adSourceId+"，中介组id：" + tpAdInfo.segmentId  + "】");
 
             }
 

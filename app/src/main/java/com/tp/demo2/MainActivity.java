@@ -12,6 +12,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.tradplus.ads.base.bean.TPAdInfo;
+import com.tradplus.ads.core.GlobalImpressionManager;
 import com.tradplus.ads.open.TradPlusSdk;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         initTradPlusSdk();
+
+
         setupMenu();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -39,7 +43,19 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onInitSuccess() {
                     Log.d(TAG, "TradPlus SDK init success");
-                    // Initialization succeeded. Request ads after this callback.
+
+
+                    TradPlusSdk.setGlobalImpressionListener(new GlobalImpressionManager.GlobalImpressionListener() {
+                        @Override
+                        public void onImpressionSuccess(TPAdInfo tpAdInfo) {
+                            Log.v(TAG, "tpAdInfo: " + tpAdInfo);
+                        }
+                    });
+
+
+
+
+
                 }
             });
             TradPlusSdk.initSdk(this, TRADPLUS_APP_ID);
@@ -60,10 +76,6 @@ public class MainActivity extends AppCompatActivity {
         btnNative.setOnClickListener(v -> startActivity(new Intent(this, NativeAdActivity.class)));
         btnInterstitial.setOnClickListener(v -> startActivity(new Intent(this, InterstitialAdActivity.class)));
         btnReward.setOnClickListener(v -> startActivity(new Intent(this, RewardedAdActivity.class)));
-        btnSplash.setOnClickListener(v -> {
-            Intent intent = new Intent(this, SplashAdActivity.class);
-            intent.putExtra(SplashAdActivity.EXTRA_MANUAL_DEMO, true);
-            startActivity(intent);
-        });
+        btnSplash.setOnClickListener(v -> startActivity(new Intent(this, SplashAdActivity.class)));
     }
 }

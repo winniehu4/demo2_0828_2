@@ -68,7 +68,7 @@ public class NativeAdActivity extends AppCompatActivity {
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
 
-                Log.v(LOG, "onAdLoaded【广告源："+ tpAdInfo.adSourceName + "，ecpm：" + tpAdInfo.ecpm + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "'中介组id："+ tpAdInfo.segmentId + "】");
+                Log.v(LOG, "onAdLoaded【广告源："+ tpAdInfo.adSourceName + "，广告源id：" + tpAdInfo.adSourceId + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "'中介组id："+ tpAdInfo.segmentId + "】");
 
                 toast("Native loaded");
             }
@@ -82,8 +82,7 @@ public class NativeAdActivity extends AppCompatActivity {
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
 
-                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "，tp.ecpm: "  + tpAdInfo.ecpm + "，广告类型：" + tpAdInfo.format  + "，广告位ID：" + tpAdInfo.tpAdUnitId + "】");
-                Log.v(LOG, "onAdImpression【广告源ID："+ tpAdInfo.adSourceId+ "】");
+                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，true_adunit_id：" + tpAdInfo.true_adunit_id + "】");
                 toast("Native impression");
             }
 
