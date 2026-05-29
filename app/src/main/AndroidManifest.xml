@@ -5,7 +5,7 @@
 
     <uses-permission android:name="android.permission.AD_ID" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -26,19 +26,18 @@
             android:name="com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING"
             android:value="true"/>
 
-        <!-- AdMob 应用ID → 请替换成你自己的正式ID！！ -->
         <!-- 测试ID：ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-6476839011381297~3641549493"/>
+        <meta-data android:name="com.google.android.gms.ads.flag.NATIVE_AD_DEBUGGER_ENABLED"
+            android:value="false" />
 
-        <!-- 仅在使用 Google Ad Manager 广告位时才需要；AdMob 场景不要开启 -->
-        <!--  ==================== 广告配置结束 ==================== -->
+        android:networkSecurityConfig="@xml/network_security_config">
 
 
-        <!-- 冷启动：桌面图标进入本页，不经过 Main -->
         <activity
-            android:name=".SplashAdActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,14 +45,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
         <activity android:name=".BannerAdActivity" />
         <activity android:name=".NativeAdActivity" />
         <activity android:name=".InterstitialAdActivity" />
         <activity android:name=".RewardedAdActivity" />
-
+        <activity android:name=".SplashAdActivity" />
     </application>
 
 </manifest>

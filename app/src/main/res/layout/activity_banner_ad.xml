@@ -41,20 +41,17 @@
             android:layout_weight="0.8"
             android:text="Show" />
 
-
-
-
-
     </LinearLayout>
 
-
-
-
+    <!-- 广告容器：高度自适应 + 居中-->
     <FrameLayout
         android:id="@+id/ad_container"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="#EEEEEE" />
+        android:background="#EEEEEE"
+        android:gravity="center"
+        android:minHeight="50dp"
+        android:padding="4dp"/>
 
 </LinearLayout>

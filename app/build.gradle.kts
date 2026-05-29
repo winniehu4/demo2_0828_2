@@ -84,6 +84,13 @@ dependencies {
 // 请注意保持与主包版本同步更新
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("com.tradplusad:tp_exchange:40.16.0.0.1")
+    // MAX
+    implementation(files("libs/max_ads_51.15.9.0.1.aar"))
+    implementation("com.applovin:applovin-sdk:13.6.2")
+    implementation("com.google.android.gms:play-services-ads-identifier:17.0.0")
+
+
+
 
     implementation(libs.appcompat)
     implementation(libs.material)

@@ -12,9 +12,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.max.ads.adapter.MaxInitManager;
 import com.tradplus.ads.base.bean.TPAdInfo;
 import com.tradplus.ads.core.GlobalImpressionManager;
 import com.tradplus.ads.open.TradPlusSdk;
+
+import sg.bigo.ads.BigoAdSdk;
+import sg.bigo.ads.api.AdConfig;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "TradPlusDemo";
@@ -26,6 +30,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        // 👇 ===================== 【Bigo SDK 全局初始化】=====================
+        AdConfig config = new AdConfig.Builder()
+                .setAppId("10182906")
+                .build();
+
+        BigoAdSdk.initialize(getApplicationContext(), config, new BigoAdSdk.InitListener() {
+            @Override
+            public void onInitialized() {
+                Log.d("BigoSDK", "Bigo SDK 初始化成功");
+            }
+
+        });
+        // 👇 ===================== 【Bigo 初始化结束】=====================
+
+
+
+// 启⽤条款和隐私政策流程
+        com.applovin.sdk.AppLovinSdk sdk = com.applovin.sdk.AppLovinSdk.getInstance(this);
+        com.applovin.sdk.AppLovinSdkSettings settings = sdk.getSettings();
+        settings.getTermsAndPrivacyPolicyFlowSettings().setEnabled(true);
+
+        // 第⼀个参数表⽰是否启⽤条款
+        MaxInitManager.getInstance().setPrivacyPolicyUri(true,"«https://your-companyname.com/privacy-policy»");
+
         initTradPlusSdk();
 
 
@@ -51,10 +80,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.v(TAG, "tpAdInfo: " + tpAdInfo);
                         }
                     });
-
-
-
-
 
                 }
             });

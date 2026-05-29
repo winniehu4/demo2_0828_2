@@ -10,4 +10,5 @@ public final class AdIds {
     public static final String REWARDED_AD_UNIT_ID = "D7B87BC9CAC111F1208EB06AEB275C12";
     public static final String SPLASH_AD_UNIT_ID = "148AA777A04490D0415FC4177AE3ED12";
     public static final String SPLASH_COLD_AD_UNIT_ID = "2917BBBB82EE29F1F2CB8BB68E2BEB12";
+    public static final String ShareUnitId = "145A120E148E1639600FA2A17823EB12";
 }
