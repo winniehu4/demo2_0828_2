@@ -14,14 +14,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.max.ads.adapter.MaxInitManager;
 import com.tradplus.ads.base.bean.TPAdInfo;
+import com.tradplus.ads.base.common.TPDataManager;
 import com.tradplus.ads.core.GlobalImpressionManager;
 import com.tradplus.ads.open.TradPlusSdk;
+//import com.tradplus.meditaiton.utils.ImportSDKUtil;
 
 import sg.bigo.ads.BigoAdSdk;
 import sg.bigo.ads.api.AdConfig;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "TradPlusDemo";
+    private static final String TAG = "mylog";
     // Replace with your real TradPlus App ID from the TradPlus dashboard.
     private static final String TRADPLUS_APP_ID = "0513C4B3D2C5B3F8EB5CF572B79DF811";
 
@@ -30,8 +32,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        //测试工具
+        //ImportSDKUtil.getInstance().showTestTools(this, TRADPLUS_APP_ID);
 
-        // 👇 ===================== 【Bigo SDK 全局初始化】=====================
+        Log.v(TAG, "MainActivity onCreate");
+       // 👇 ===================== 【Bigo SDK 全局初始化】=====================
         AdConfig config = new AdConfig.Builder()
                 .setAppId("10182906")
                 .build();
@@ -39,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         BigoAdSdk.initialize(getApplicationContext(), config, new BigoAdSdk.InitListener() {
             @Override
             public void onInitialized() {
-                Log.d("BigoSDK", "Bigo SDK 初始化成功");
+                Log.v(TAG, "Bigo SDK 初始化成功");
             }
 
         });
@@ -48,15 +53,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 // 启⽤条款和隐私政策流程
-        com.applovin.sdk.AppLovinSdk sdk = com.applovin.sdk.AppLovinSdk.getInstance(this);
+       /* com.applovin.sdk.AppLovinSdk sdk = com.applovin.sdk.AppLovinSdk.getInstance(this);
         com.applovin.sdk.AppLovinSdkSettings settings = sdk.getSettings();
-        settings.getTermsAndPrivacyPolicyFlowSettings().setEnabled(true);
+        settings.getTermsAndPrivacyPolicyFlowSettings().setEnabled(true);*/
 
         // 第⼀个参数表⽰是否启⽤条款
-        MaxInitManager.getInstance().setPrivacyPolicyUri(true,"«https://your-companyname.com/privacy-policy»");
+       // MaxInitManager.getInstance().setPrivacyPolicyUri(true,"«https://your-companyname.com/privacy-policy»");
 
         initTradPlusSdk();
-
+//开启tp内部日志
+        //TPDataManager.getInstance().setDebugMode(true);
 
         setupMenu();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

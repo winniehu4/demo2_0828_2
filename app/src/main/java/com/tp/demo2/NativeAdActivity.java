@@ -52,6 +52,7 @@ public class NativeAdActivity extends AppCompatActivity {
 
     private void initNative() {
         tpNative = new TPNative(NativeAdActivity.this, AdIds.NATIVE_AD_UNIT_ID);
+        tpNative.setAutoLoadCallback(true);
         Log.v(LOG, " ========== 广告对象已创建 ==========");
         tpNative.setAdListener(new NativeAdListener() {
             @Override

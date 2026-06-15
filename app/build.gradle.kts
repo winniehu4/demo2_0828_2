@@ -84,12 +84,27 @@ dependencies {
 // 请注意保持与主包版本同步更新
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("com.tradplusad:tp_exchange:40.16.0.0.1")
+
     // MAX
     implementation(files("libs/max_ads_51.15.9.0.1.aar"))
     implementation("com.applovin:applovin-sdk:13.6.2")
     implementation("com.google.android.gms:play-services-ads-identifier:17.0.0")
+    // Start.io
+    implementation("com.startapp:inapp-sdk:5.3.0")
+    implementation("com.tradplusad:tradplus-startapp:28.16.1.0.1")
+    // Sigmob
+    implementation("com.tradplusad:tradplus-sigmob:21.16.1.0.1")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("com.tradplusad:sigmob-ads:4.25.21")
+    implementation("com.tradplusad:sigmob-ads-common:2.0.2")
 
 
+    /*
+        // ... other project dependencies
+    // TradPlus Tools
+        implementation("com.tradplusad:tradplus-tool:1.1.6")
+        implementation("androidx.recyclerview:recyclerview:1.2.0")
+        implementation("androidx.appcompat:appcompat:1.6.1")*/
 
 
     implementation(libs.appcompat)

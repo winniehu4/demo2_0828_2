@@ -52,7 +52,7 @@ public class BigoInterstitialC2SAdapter extends TPInterstitialAdapter {
 
     @Override
     public void loadCustomAd(Context context, Map<String, Object> localParams, Map<String, String> tpParams) {
-        Log.v(TAG,"进入了loadCustomAd()");
+        Log.v(TAG,"进入了BIGO C2SloadCustomAd()");
 
         // ============== 1. 读取本地参数 ==============
         boolean isTestMode = false;
@@ -125,11 +125,11 @@ public class BigoInterstitialC2SAdapter extends TPInterstitialAdapter {
                             mLoadAdapterListener.loadAdapterLoadFailed(tpError);
                         }
                     }
-
+                    //onAdLoaded() 回调里一起返回广告和 ECPM
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd ad) {
-                        mInterstitialAd = ad;
-                        AdBid adBid = ad.getBid();
+                        mInterstitialAd = ad;//拿到广告
+                        AdBid adBid = ad.getBid();//直接从这个广告对象里面取出竞价信息，包括ecpm
 
                         if (adBid == null || adBid.getPrice() <= 0) {
                             Log.v(TAG, "ECPM无效");
@@ -142,9 +142,15 @@ public class BigoInterstitialC2SAdapter extends TPInterstitialAdapter {
                         // 竞价成功，上报价格
                         Log.v(TAG, "竞价成功 ECPM："+adBid.getPrice());
                         Map<String, Object> ecpmMap = new HashMap<>();
-                        ecpmMap.put("ecpm", adBid.getPrice());
+                        ecpmMap.put("ecpm", 100);//如果三方广告平台返回0价，则在adBid.getPrice()这里修改为一个固定的价格
+
+                        Log.v(TAG,
+                                "上报给TP的ECPM="
+                                        + adBid.getPrice());
+
+
                         if (mOnC2STokenListener != null) {
-                            mOnC2STokenListener.onC2SBiddingResult(ecpmMap);
+                            mOnC2STokenListener.onC2SBiddingResult(ecpmMap);//传给TP
                         }
 
                         // 标记竞价成功

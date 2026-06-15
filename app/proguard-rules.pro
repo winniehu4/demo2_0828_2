@@ -24,3 +24,4 @@
 -keep public class com.tradplus.** { *; }
 -keep class com.tradplus.ads.** { *; }
 -keep class com.max.ads.adapter.** {*;}
+-keep class com.google.ads.mediation.customevent.** {*;}

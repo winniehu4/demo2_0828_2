@@ -57,7 +57,7 @@ public class InterstitialAdActivity extends AppCompatActivity {
     private void initInterstitial() {
         tpInterstitial = new TPInterstitial(InterstitialAdActivity.this, AdIds.INTERSTITIAL_AD_UNIT_ID);
         Log.v(LOG, " ========== 广告对象已创建 ==========");
-// ===== 传入本地参数 =====
+    // ===== 传入本地参数 =====
         Map<String, Object> localParams = new HashMap<>();
         localParams.put("is_test_mode", true);
         localParams.put("local_placement_id", "10182906-10018951");
