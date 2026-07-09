@@ -37,10 +37,10 @@ android {
 
 dependencies {
     // TradPlus
-    implementation("com.tradplusad:tradplus:16.0.0.1")
+    implementation("com.tradplusad:tradplus:16.3.0.1")
 // Admob
-    implementation("com.google.android.gms:play-services-ads:25.2.0")
-    implementation("com.tradplusad:tradplus-googlex:2.16.0.0.1")
+    implementation("com.google.android.gms:play-services-ads:25.3.0")
+    implementation("com.tradplusad:tradplus-googlex:2.16.3.0.1")
 // Meta
     implementation("com.facebook.android:audience-network-sdk:6.21.0")
     implementation("com.tradplusad:tradplus-facebook:1.16.0.0.1")
@@ -73,8 +73,10 @@ dependencies {
     implementation("com.tradplusad:tradplus-vunglex:7.16.0.0.1")
     implementation("com.vungle:vungle-ads:7.7.1")
 // Yandex
-    implementation("com.yandex.android:mobileads:7.18.5")
-    implementation("com.tradplusad:tradplus-yandex:50.16.0.0.1")
+    implementation("com.yandex.android:mobileads:8.0.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.25")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
+    implementation("com.tradplusad:tradplus-yandex:50.16.2.0.1")
 // Bigo
     implementation("com.bigossp:bigo-ads:5.8.0")
     implementation("com.tradplusad:tradplus-bigo:57.16.0.0.1")
@@ -93,10 +95,18 @@ dependencies {
     implementation("com.startapp:inapp-sdk:5.3.0")
     implementation("com.tradplusad:tradplus-startapp:28.16.1.0.1")
     // Sigmob
-    implementation("com.tradplusad:tradplus-sigmob:21.16.1.0.1")
+    implementation("com.tradplusad:tradplus-sigmob:21.16.2.0.1")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("com.tradplusad:sigmob-ads:4.25.21")
-    implementation("com.tradplusad:sigmob-ads-common:2.0.2")
+    implementation("com.tradplusad:sigmob-ads:4.25.23")
+    implementation("com.tradplusad:sigmob-ads-common:2.0.4")
+
+// Magnite
+    implementation("com.magnite.sdk:ads-sdk:0.0.13")
+    implementation("com.tradplusad:tradplus-magnite:83.16.3.0.1")
+
+
+
+
 
 
     /*

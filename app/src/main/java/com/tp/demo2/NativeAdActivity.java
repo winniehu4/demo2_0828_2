@@ -27,7 +27,7 @@ public class NativeAdActivity extends AppCompatActivity {
     private TPNative tpNative;
     private FrameLayout adContainer;
     private static final String LOG= "myLog";
-    // 定义比价阈值
+    // 定义比价价格
     private final double comparePriceValue = 6.0;
 
     @Override
@@ -55,6 +55,7 @@ public class NativeAdActivity extends AppCompatActivity {
         tpNative.setAutoLoadCallback(true);
         Log.v(LOG, " ========== 广告对象已创建 ==========");
         tpNative.setAdListener(new NativeAdListener() {
+            //比价接口写在onAdloaded里，说明tp这时候已经拿到广告了
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
                 // ========== 广告加载成功后执行比价逻辑 ==========
@@ -67,18 +68,18 @@ public class NativeAdActivity extends AppCompatActivity {
                     Log.e(LOG, "eCPM格式异常，无法转换：" + tpAdInfo.ecpm);
                 }
 
-                // 2. 调用比价接口，isTPW返回布尔值
+                // 2. 调用比价接口，isTPW返回布尔值，
                 boolean isMatchPrice = comparePrice.isTPW(comparePriceValue, AdIds.NATIVE_AD_UNIT_ID);
 
                 // 3. 打印比价结果
                 Log.v(LOG, "========== 比价结果 ==========");
                 Log.v(LOG, "广告源ID：" + tpAdInfo.adSourceId);
-                Log.v(LOG, "广告实际eCPM：" + realEcpm);
-                Log.v(LOG, "比价阈值：" + comparePriceValue);
-                Log.v(LOG, "广告实际ecpm更高？：" + isMatchPrice);
+                Log.v(LOG, "TP广告的eCPM：" + realEcpm);
+                Log.v(LOG, "跟TP比价的价格：" + comparePriceValue);
+                Log.v(LOG, "TP价格更高？：" + isMatchPrice);
                 Log.v(LOG, "==============================");
 
-                Log.v(LOG, "onAdLoaded【广告源："+ tpAdInfo.adSourceName + "，广告源id：" + tpAdInfo.adSourceId + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "'中介组id："+ tpAdInfo.segmentId + "】");
+                Log.v(LOG, "onAdLoaded【广告源："+ tpAdInfo.adSourceName + "，广告源id：" + tpAdInfo.adSourceId + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "，中介组id："+ tpAdInfo.segmentId + "，ecpm："+tpAdInfo.ecpm+  " 】");
                 toast("Native loaded");
             }
 
@@ -90,7 +91,7 @@ public class NativeAdActivity extends AppCompatActivity {
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
-                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "，广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，true_adunit_id：" + tpAdInfo.true_adunit_id + "】");
+                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "，广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，ecpm：" + tpAdInfo.ecpm + "】");
                 toast("Native impression");
             }
 
@@ -119,9 +120,9 @@ public class NativeAdActivity extends AppCompatActivity {
 
     private void checkAdFill() {
         if (tpNative != null && tpNative.isReady()) {
-            toast("原生广告有填充，可以展示");
+            toast("Native is ready");
         } else {
-            toast("原生广告无填充/未加载完成");
+            toast("Native not ready");
         }
     }
 

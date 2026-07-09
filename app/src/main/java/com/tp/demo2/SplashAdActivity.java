@@ -90,9 +90,9 @@ public class SplashAdActivity extends AppCompatActivity {
     private void checkAdFill() {
         // 替换成你的开屏对象：tpSplash
         if (tpSplash != null && tpSplash.isReady()) {
-            toast("开屏广告有填充，可以展示");
+            toast("Splash is ready");
         } else {
-            toast("开屏广告无填充/未加载完成");
+            toast("Splash not ready");
         }
     }
 

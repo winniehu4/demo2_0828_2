@@ -38,7 +38,7 @@ public class InterstitialAdActivity extends AppCompatActivity {
         disableAutoLoadForInterstitialAd();
         initInterstitial();//先初始化
         //设置点击按钮 → 点击后才 loadAd()
-        btnLoad.setOnClickListener(v -> tpInterstitial.loadAd());// 再调用load，若没有初始化，tpInterstitial是null，会崩溃
+        btnLoad.setOnClickListener(v -> loadInter());// 再调用load，若没有初始化，tpInterstitial是null，会崩溃
         btnCheck.setOnClickListener(v -> checkAdFill());
         btnShow.setOnClickListener(v -> showInterstitial());
     }
@@ -58,19 +58,18 @@ public class InterstitialAdActivity extends AppCompatActivity {
         tpInterstitial = new TPInterstitial(InterstitialAdActivity.this, AdIds.INTERSTITIAL_AD_UNIT_ID);
         Log.v(LOG, " ========== 广告对象已创建 ==========");
     // ===== 传入本地参数 =====
-        Map<String, Object> localParams = new HashMap<>();
-        localParams.put("is_test_mode", true);
-        localParams.put("local_placement_id", "10182906-10018951");
-        localParams.put("local_app_id","10182906");
+        Map<String, Object> mlocalParams = new HashMap<>();
+        mlocalParams.put("user_id", "123");
+        mlocalParams.put("custom_data", "asd");
 
-        tpInterstitial.setCustomParams(localParams);
+        tpInterstitial.setCustomParams(mlocalParams);
 
 
         tpInterstitial.setAdListener(new InterstitialAdListener() {
             @Override// 加载成功
             public void onAdLoaded(TPAdInfo tpAdInfo) {
 
-                Log.v(LOG, "onAdLoaded【广告源："+ tpAdInfo.adSourceName + "，广告源id：" + tpAdInfo.adSourceId + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "'中介组id："+ tpAdInfo.segmentId + "】");
+                Log.v(LOG, "onAdLoaded【广告源："+ tpAdInfo.adSourceName + "，广告源id：" + tpAdInfo.adSourceId + "，广告类型：" + tpAdInfo.format + "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，true_adunit_id："+ tpAdInfo.true_adunit_id+"，中介组id："+ "，ecpm："+tpAdInfo.ecpm + tpAdInfo.segmentId + "】");
 
 
                 toast("Interstitial loaded");
@@ -80,12 +79,13 @@ public class InterstitialAdActivity extends AppCompatActivity {
             public void onAdFailed(TPAdError error) {
                 Log.v(LOG, "onAdFailed【code : "+ error.getErrorCode() + ", msg :" + error.getErrorMsg() + "】");
                 toast("Interstitial load failed: " + error.getErrorMsg());
+                Log.i(LOG, "failed_after");
             }
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
 
-                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  ",广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，true_adunit_id：" + tpAdInfo.true_adunit_id + "】");
+                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  ",广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，true_adunit_id：" + tpAdInfo.true_adunit_id + ",ECPM:"+tpAdInfo.ecpm+"】");
 
 
                 toast("Interstitial impression");
@@ -124,80 +124,24 @@ public class InterstitialAdActivity extends AppCompatActivity {
                 // Optional callback in newer SDK versions.
             }
         });
-
-        //单个源维度打印
-
-        tpInterstitial.setAllAdLoadListener(new LoadAdEveryLayerListener() {
-            @Override
-            public void onAdAllLoaded(boolean isSuccess) {
-
-                Log.v(LOG, "onAdAllLoaded: 该广告位下所有广告加载结束，是否有广告加载成功 ：" + isSuccess);
-
-            }
-
-            @Override
-            public void oneLayerLoadFailed(TPAdError tpAdError, TPAdInfo tpAdInfo) {
-                // 错误码 + 错误信息 + 广告源ID
-                Log.v(LOG, "oneLayerLoadFailed【广告源：" + tpAdInfo.adSourceName +",广告源id:"+tpAdInfo.adSourceId+ "，中介组id：" + tpAdInfo.segmentId + "，加载失败，code :: " +
-                        tpAdError.getErrorCode() + " , Msg :: " + tpAdError.getErrorMsg() + "】");
-
-            }
-
-            @Override
-            public void oneLayerLoaded(TPAdInfo tpAdInfo) {
-                Log.v(LOG, "oneLayerLoaded【广告源：" + tpAdInfo.adSourceName + ",广告源id:"+tpAdInfo.adSourceId+"，中介组id：" + tpAdInfo.segmentId  + "】");
-
-            }
-
-            @Override
-            public void onAdStartLoad(String adUnitId) {
-
-                Log.v(LOG, "onAdStartLoad【广告位ID：" + adUnitId + "】");
-            }
-
-            @Override
-            public void oneLayerLoadStart(TPAdInfo tpAdInfo) {
-
-            }
-
-            @Override
-            public void onBiddingStart(TPAdInfo tpAdInfo) {
-                Log.v(LOG, "onBiddingStart【广告源：" + tpAdInfo.adSourceName + "，中介组id：" + tpAdInfo.segmentId  +
-                        "】");
-
-            }
-
-            @Override
-            public void onBiddingEnd(TPAdInfo tpAdInfo, TPAdError tpAdError) {
-                Log.v(LOG, "onBiddingEnd【广告源：" + tpAdInfo.adSourceName + "，中介组id：" + tpAdInfo.segmentId + "，code :: " +
-                        tpAdError.getErrorCode() + " , Msg :: " + tpAdError.getErrorMsg() + "】");
-
-            }
-
-            @Override
-            public void onAdIsLoading(String adUnitId) {
-                Log.v(LOG, "onAdIsLoading【" + adUnitId + "】");
-
-            }
-        });
+        tpInterstitial.setAllAdLoadListener(
+                EveryLayerLoadListenerHelper.create(this, "TPDemo/BannerEveryLayer", "横幅"));
 
     }
-
+    private void loadInter() {
+        tpInterstitial.loadAd();
+    }
 
     private void checkAdFill() {
-        if (tpInterstitial != null && tpInterstitial.isReady()) {
-            toast("插屏广告有填充，可以展示");
+        if (tpInterstitial != null && tpInterstitial.isReady()){
+            toast("Interstitial is ready");
         } else {
-            toast("插屏广告无填充/未加载完成");
+            toast("Interstitial not ready");
         }
     }
 
     private void showInterstitial() {
-        if (tpInterstitial.isReady()) {
             tpInterstitial.showAd(InterstitialAdActivity.this, null);
-        } else {
-            toast("Interstitial not ready");
-        }
     }
 
     private void toast(String text) {

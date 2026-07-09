@@ -12,7 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.max.ads.adapter.MaxInitManager;
+//import com.max.ads.adapter.MaxInitManager;
 import com.tradplus.ads.base.bean.TPAdInfo;
 import com.tradplus.ads.base.common.TPDataManager;
 import com.tradplus.ads.core.GlobalImpressionManager;
@@ -23,7 +23,7 @@ import sg.bigo.ads.BigoAdSdk;
 import sg.bigo.ads.api.AdConfig;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "mylog";
+    private static final String TAG = "demo";
     // Replace with your real TradPlus App ID from the TradPlus dashboard.
     private static final String TRADPLUS_APP_ID = "0513C4B3D2C5B3F8EB5CF572B79DF811";
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         initTradPlusSdk();
 //开启tp内部日志
-        //TPDataManager.getInstance().setDebugMode(true);
+        TPDataManager.getInstance().setDebugMode(true);
 
         setupMenu();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -73,13 +73,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initTradPlusSdk() {
-        try {
             TradPlusSdk.setTradPlusInitListener(new TradPlusSdk.TradPlusInitListener() {
                 @Override
                 public void onInitSuccess() {
                     Log.d(TAG, "TradPlus SDK init success");
 
-
+                    //全局展示回调
                     TradPlusSdk.setGlobalImpressionListener(new GlobalImpressionManager.GlobalImpressionListener() {
                         @Override
                         public void onImpressionSuccess(TPAdInfo tpAdInfo) {
@@ -90,11 +89,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             TradPlusSdk.initSdk(this, TRADPLUS_APP_ID);
-        } catch (Throwable t) {
-            Log.e(TAG, "TradPlus SDK init failed", t);
-            Toast.makeText(this, "TradPlus init failed: " + t.getClass().getSimpleName(), Toast.LENGTH_LONG).show();
         }
-    }
+
 
     private void setupMenu() {
         Button btnBanner = findViewById(R.id.btn_banner);

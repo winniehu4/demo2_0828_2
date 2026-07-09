@@ -19,7 +19,6 @@
         android:layout_marginTop="16dp"
         android:text="Load Rewarded" />
 
-
     <Button
         android:id="@+id/btn_check"
         android:layout_width="match_parent"
@@ -27,12 +26,18 @@
         android:layout_marginTop="16dp"
         android:text="isReady()" />
 
-
     <Button
         android:id="@+id/btn_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Show Rewarded" />
+
+    <Button
+        android:id="@+id/btn_change"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Change Params" />
 
 </LinearLayout>
