@@ -36,6 +36,7 @@ public class BigoInterstitialC2SAdapter extends TPInterstitialAdapter {
     private boolean isBiddingSuccess = false;
 
 
+
     @Override
     public void getC2SBidding(Context context,
                               Map<String, Object> localParams,
@@ -140,18 +141,26 @@ public class BigoInterstitialC2SAdapter extends TPInterstitialAdapter {
                         }
 
                         // 竞价成功，上报价格
-                        Log.v(TAG, "竞价成功 ECPM："+adBid.getPrice());
+                        Log.v(TAG, "竞价成功 ECPM："+(double)adBid.getPrice());
+
+                        //ecpm是double类型
+
+                        double ecpm = Double.valueOf(String.valueOf(adBid.getPrice()));
+
                         Map<String, Object> ecpmMap = new HashMap<>();
-                        ecpmMap.put("ecpm", 100);//如果三方广告平台返回0价，则在adBid.getPrice()这里修改为一个固定的价格
+                        ecpmMap.put("ecpm", ecpm);
 
-                        Log.v(TAG,
-                                "上报给TP的ECPM="
-                                        + adBid.getPrice());
-
+                        Log.v(TAG, "上报给TP的ECPM=" + ecpm);
+                        Log.v(TAG, "ecpm对象类型=" + ecpmMap.get("ecpm").getClass().getName());
 
                         if (mOnC2STokenListener != null) {
-                            mOnC2STokenListener.onC2SBiddingResult(ecpmMap);//传给TP
+                            mOnC2STokenListener.onC2SBiddingResult(ecpmMap);
                         }
+
+
+
+
+
 
                         // 标记竞价成功
                         isBiddingSuccess = true;

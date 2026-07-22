@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 //import com.max.ads.adapter.MaxInitManager;
 import com.tradplus.ads.base.bean.TPAdInfo;
 import com.tradplus.ads.base.common.TPDataManager;
+import com.tradplus.ads.base.network.TPSettingManager;
 import com.tradplus.ads.core.GlobalImpressionManager;
 import com.tradplus.ads.open.TradPlusSdk;
 //import com.tradplus.meditaiton.utils.ImportSDKUtil;
@@ -59,10 +60,13 @@ public class MainActivity extends AppCompatActivity {
 
         // 第⼀个参数表⽰是否启⽤条款
        // MaxInitManager.getInstance().setPrivacyPolicyUri(true,"«https://your-companyname.com/privacy-policy»");
-
+//全局关闭自动加载
+TPSettingManager.getInstance().setGlobalCloseAutoload(true);
+//设置测试设备id，初始化sdk前调用
+        TradPlusSdk.setTestCustomId("hwq_testDevice");
         initTradPlusSdk();
 //开启tp内部日志
-        TPDataManager.getInstance().setDebugMode(true);
+        //TPDataManager.getInstance().setDebugMode(true);
 
         setupMenu();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -71,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
     }
+
 
     private void initTradPlusSdk() {
             TradPlusSdk.setTradPlusInitListener(new TradPlusSdk.TradPlusInitListener() {

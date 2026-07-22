@@ -31,7 +31,7 @@ public class RewardedAdActivity extends AppCompatActivity implements View.OnClic
 
         setContentView(R.layout.activity_rewarded_ad);
 
-        disableAutoLoadForInterstitialAd();
+        //disableAutoLoadForInterstitialAd();
 
         // 进入页面立即创建广告对象
         createRewardObjectIfNeed();

@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.tp.demo2"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -38,9 +38,14 @@ android {
 dependencies {
     // TradPlus
     implementation("com.tradplusad:tradplus:16.3.0.1")
-// Admob
+
+    // GMA Next Gen
+    implementation("com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:1.0.1")
+    implementation("com.tradplusad:tradplus-gma-nextgen:2.16.3.0.1")
+
+/*// Admob
     implementation("com.google.android.gms:play-services-ads:25.3.0")
-    implementation("com.tradplusad:tradplus-googlex:2.16.3.0.1")
+    implementation("com.tradplusad:tradplus-googlex:2.16.3.0.1")*/
 // Meta
     implementation("com.facebook.android:audience-network-sdk:6.21.0")
     implementation("com.tradplusad:tradplus-facebook:1.16.0.0.1")
@@ -103,9 +108,11 @@ dependencies {
 // Magnite
     implementation("com.magnite.sdk:ads-sdk:0.0.13")
     implementation("com.tradplusad:tradplus-magnite:83.16.3.0.1")
-
-
-
+//google ump
+    implementation("com.google.android.ump:user-messaging-platform:2.1.0")
+// UnityAds
+    implementation("com.tradplusad:tradplus-unity:5.16.2.0.1")
+    implementation("com.unity3d.ads:unity-ads:4.18.0")
 
 
 

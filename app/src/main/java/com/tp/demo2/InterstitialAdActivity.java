@@ -8,14 +8,18 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.tradplus.ads.base.bean.MixAdInfo;
 import com.tradplus.ads.base.bean.TPAdError;
 import com.tradplus.ads.base.bean.TPAdInfo;
+import com.tradplus.ads.mgr.TPResult;
 import com.tradplus.ads.open.LoadAdEveryLayerListener;
 import com.tradplus.ads.open.TradPlusSdk;
 import com.tradplus.ads.open.interstitial.InterstitialAdListener;
 import com.tradplus.ads.open.interstitial.TPInterstitial;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InterstitialAdActivity extends AppCompatActivity {
@@ -35,7 +39,7 @@ public class InterstitialAdActivity extends AppCompatActivity {
         Button btnCheck = findViewById(R.id.btn_check);
 
         // =====在这里调用关闭自动加载，必须在initInterstitial()之前 =====
-        disableAutoLoadForInterstitialAd();
+        //disableAutoLoadForInterstitialAd();
         initInterstitial();//先初始化
         //设置点击按钮 → 点击后才 loadAd()
         btnLoad.setOnClickListener(v -> loadInter());// 再调用load，若没有初始化，tpInterstitial是null，会崩溃
@@ -79,7 +83,6 @@ public class InterstitialAdActivity extends AppCompatActivity {
             public void onAdFailed(TPAdError error) {
                 Log.v(LOG, "onAdFailed【code : "+ error.getErrorCode() + ", msg :" + error.getErrorMsg() + "】");
                 toast("Interstitial load failed: " + error.getErrorMsg());
-                Log.i(LOG, "failed_after");
             }
 
             @Override
@@ -128,6 +131,10 @@ public class InterstitialAdActivity extends AppCompatActivity {
                 EveryLayerLoadListenerHelper.create(this, "TPDemo/BannerEveryLayer", "横幅"));
 
     }
+
+
+
+
     private void loadInter() {
         tpInterstitial.loadAd();
     }
@@ -140,8 +147,61 @@ public class InterstitialAdActivity extends AppCompatActivity {
         }
     }
 
+
+    private void testMixPrice() {
+
+        TPResult tpResult = new TPResult();
+        List<MixAdInfo> mixAdInfos = new ArrayList<>();
+
+        // 添加 ecpm：1~10
+        for (int i = 1; i <= 10; i++) {
+            MixAdInfo info = new MixAdInfo();
+            info.setEcpm(i);
+            mixAdInfos.add(info);
+        }
+
+        // 添加自己的广告位
+        MixAdInfo selfAd = new MixAdInfo();
+        selfAd.setAdUnitId(AdIds.INTERSTITIAL_AD_UNIT_ID);
+        mixAdInfos.add(selfAd);
+
+        // 调用比价
+        List<MixAdInfo> resultList = tpResult.handleMix(mixAdInfos);
+
+        // 拼接日志
+        StringBuilder res = new StringBuilder();
+        for (MixAdInfo info : resultList) {
+            if (info.getAdUnitId() != null && !info.getAdUnitId().isEmpty()) {
+                res.append(info.getAdUnitId());
+            } else {
+                res.append((int) info.getEcpm());
+            }
+            res.append(", ");
+        }
+
+        // 去掉最后一个 ", "
+        if (res.length() >= 2) {
+            res.setLength(res.length() - 2);
+        }
+
+        Log.v(LOG, "Mix排序结果：" + res);
+    }
+
+
+
     private void showInterstitial() {
+
+        if (tpInterstitial != null && tpInterstitial.isReady()) {
+
+            // 展示前先调用高阶比价接口
+            testMixPrice();
+
+            // 再展示广告
             tpInterstitial.showAd(InterstitialAdActivity.this, null);
+
+        } else {
+            toast("Interstitial not ready");
+        }
     }
 
     private void toast(String text) {

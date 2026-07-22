@@ -34,7 +34,7 @@ public class CustomBigoInterstitialAdapter extends TPInterstitialAdapter {
 
     @Override
     public void loadCustomAd(Context context, Map<String, Object> userParams, Map<String, String> tpParams) {
-        Log.v(TAG, "【进了Bigo2 loadCustomAd()】");
+        //Log.v(TAG, "【进了Bigo2 loadCustomAd()】");
         // 读取后台的 placementId
         if (tpParams != null && tpParams.containsKey("placementId")) {
             placementId = tpParams.get("placementId");
@@ -67,7 +67,7 @@ public class CustomBigoInterstitialAdapter extends TPInterstitialAdapter {
 
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd ad) {
-                        Log.v(TAG, "CustomBigo广告加载成功");
+                        //Log.v(TAG, "CustomBigo广告加载成功");
                         // 先赋值，再设置监听
                         mInterstitialAd = ad;
 

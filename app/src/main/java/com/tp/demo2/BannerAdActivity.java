@@ -95,7 +95,7 @@ public class BannerAdActivity extends AppCompatActivity {
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
                 Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "，广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，true_adunit_id：" + tpAdInfo.true_adunit_id + ",ecpm:"+tpAdInfo.ecpm+"】");
-
+                Log.v(LOG,"bannerH:"+tpAdInfo.bannerH+",bannerW:"+tpAdInfo.bannerW);
                 toast("Banner impression");
             }
 

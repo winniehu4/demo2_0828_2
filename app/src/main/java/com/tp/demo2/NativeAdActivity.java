@@ -28,7 +28,10 @@ public class NativeAdActivity extends AppCompatActivity {
     private FrameLayout adContainer;
     private static final String LOG= "myLog";
     // 定义比价价格
-    private final double comparePriceValue = 6.0;
+    private final double comparePriceValue = 3.0;
+
+
+    private TPAdInfo currentAdInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public class NativeAdActivity extends AppCompatActivity {
 
         initNative();
 
-        btnLoad.setOnClickListener(v -> tpNative.loadAd());
+        btnLoad.setOnClickListener(v -> loadAdFill());
         btnCheck.setOnClickListener(v -> checkAdFill());
         btnShow.setOnClickListener(v -> showNative());
     }
@@ -55,29 +58,9 @@ public class NativeAdActivity extends AppCompatActivity {
         tpNative.setAutoLoadCallback(true);
         Log.v(LOG, " ========== 广告对象已创建 ==========");
         tpNative.setAdListener(new NativeAdListener() {
-            //比价接口写在onAdloaded里，说明tp这时候已经拿到广告了
             @Override
             public void onAdLoaded(TPAdInfo tpAdInfo, TPBaseAd tpBaseAd) {
-                // ========== 广告加载成功后执行比价逻辑 ==========
-                TPOutcome comparePrice = new TPOutcome();
-                // 1. 转换ecpm字符串为double
-                double realEcpm = 0.0;
-                try {
-                    realEcpm = Double.parseDouble(tpAdInfo.ecpm);
-                } catch (NumberFormatException e) {
-                    Log.e(LOG, "eCPM格式异常，无法转换：" + tpAdInfo.ecpm);
-                }
 
-                // 2. 调用比价接口，isTPW返回布尔值，
-                boolean isMatchPrice = comparePrice.isTPW(comparePriceValue, AdIds.NATIVE_AD_UNIT_ID);
-
-                // 3. 打印比价结果
-                Log.v(LOG, "========== 比价结果 ==========");
-                Log.v(LOG, "广告源ID：" + tpAdInfo.adSourceId);
-                Log.v(LOG, "TP广告的eCPM：" + realEcpm);
-                Log.v(LOG, "跟TP比价的价格：" + comparePriceValue);
-                Log.v(LOG, "TP价格更高？：" + isMatchPrice);
-                Log.v(LOG, "==============================");
 
                 Log.v(LOG, "onAdLoaded【广告源："+ tpAdInfo.adSourceName + "，广告源id：" + tpAdInfo.adSourceId + "，广告类型：" + tpAdInfo.format + "，广告位ID：" + tpAdInfo.tpAdUnitId + "，中介组id："+ tpAdInfo.segmentId + "，ecpm："+tpAdInfo.ecpm+  " 】");
                 toast("Native loaded");
@@ -118,6 +101,12 @@ public class NativeAdActivity extends AppCompatActivity {
     }
 
 
+    private void loadAdFill(){
+
+        tpNative.loadAd();
+    }
+
+
     private void checkAdFill() {
         if (tpNative != null && tpNative.isReady()) {
             toast("Native is ready");
@@ -128,6 +117,17 @@ public class NativeAdActivity extends AppCompatActivity {
 
     private void showNative() {
         if (tpNative.isReady()) {
+
+            // ================= 自建聚合比价接口 =================
+            TPOutcome tpOutcome = new TPOutcome();
+            boolean isTpWin = tpOutcome.isTPW(comparePriceValue, AdIds.NATIVE_AD_UNIT_ID);
+
+            Log.v(LOG,
+                    "比价结果【传入价格：" + comparePriceValue +
+                            "，TP广告位ID：" + AdIds.NATIVE_AD_UNIT_ID +
+                            "，TP是否Win：" + isTpWin + "】");
+            // ==========================================
+
             adContainer.removeAllViews();
             logTemplateValidation();
             tpNative.showAd(adContainer, R.layout.tp_native_ad_list_item, "54CA98771B77F6");
