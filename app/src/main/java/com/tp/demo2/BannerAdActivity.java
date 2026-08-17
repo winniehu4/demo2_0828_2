@@ -62,7 +62,7 @@ public class BannerAdActivity extends AppCompatActivity {
 
 
        tpBanner.closeAutoShow();//关闭自动展示，广告加载后不会自己弹出
-
+/*
         //流量分组
         HashMap<String, String> map = new HashMap<>();
         map.put("channel", "abc");
@@ -70,7 +70,7 @@ public class BannerAdActivity extends AppCompatActivity {
         SegmentUtils.initPlacementCustomMap(
                 AdIds.BANNER_AD_UNIT_ID,
                 map
-        );
+        );*/
 
         //一定要先设置监听再load
         tpBanner.setAdListener(new BannerAdListener() {
@@ -121,7 +121,7 @@ public class BannerAdActivity extends AppCompatActivity {
 
 
     private void loadBanner() {
-        if (tpBanner.getParent() == null) {
+/*        if (tpBanner.getParent() == null) {
 
 //内嵌自适应
             FrameLayout.LayoutParams params =
@@ -131,7 +131,11 @@ public class BannerAdActivity extends AppCompatActivity {
 
 
             adContainer.addView(tpBanner,params);//将广告添加到FrameLayout里
-        }
+
+
+        }*/
+
+        adContainer.addView(tpBanner);
         tpBanner.loadAd(AdIds.BANNER_AD_UNIT_ID);//传入广告位id,SDK根据后台配置的规则，向广告源发起请求
     }
 

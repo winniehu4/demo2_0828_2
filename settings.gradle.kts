@@ -23,16 +23,25 @@ dependencyResolutionManagement {
         // TradPlus
         mavenCentral()//maven仓库
 
+        // Huawei
+        maven {
+            url = uri("https://developer.huawei.com/repo/")
+        }
+
         flatDir {
             dirs("libs")
         }
-
+        // TaurusX
+        maven {
+            url = uri("https://artifact.taurusx.com/artifactory/taurusx-sdk/")}
 
 
         // Pangle
         maven {
             url = uri("https://artifact.bytedance.com/repository/pangle")
         }
+
+
 
 
         //Mintegral

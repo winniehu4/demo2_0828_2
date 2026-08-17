@@ -14,6 +14,8 @@ import com.tradplus.ads.base.bean.TPAdInfo;
 import com.tradplus.ads.base.bean.TPBaseAd;
 import com.tradplus.ads.open.splash.SplashAdListener;
 import com.tradplus.ads.open.splash.TPSplash;
+import static com.tp.compareprice.ComparePriceUtil.recursiveComparePrice;
+
 
 public class SplashAdActivity extends AppCompatActivity {
     private TPSplash tpSplash;
@@ -39,7 +41,7 @@ public class SplashAdActivity extends AppCompatActivity {
     }
 
     private void initSplash() {
-        tpSplash = new TPSplash(SplashAdActivity.this, AdIds.SPLASH_AD_UNIT_ID);
+        tpSplash = new TPSplash(null, AdIds.SPLASH_AD_UNIT_ID);
         Log.v(LOG, " ========== 广告对象已创建 ==========");
         tpSplash.setAdListener(new SplashAdListener() {
             @Override
@@ -56,7 +58,7 @@ public class SplashAdActivity extends AppCompatActivity {
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
-                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，true_adunit_id：" + tpAdInfo.true_adunit_id + "】");
+                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，ecpm：" + tpAdInfo.ecpm + "】");
 
 
 
@@ -98,7 +100,10 @@ public class SplashAdActivity extends AppCompatActivity {
 
 
     private void showSplash() {
-        if (tpSplash.isReady()) {
+        if (tpSplash != null && tpSplash.isReady()) {
+            double comparePrice = recursiveComparePrice(AdIds.SPLASH_AD_UNIT_ID);
+            Log.v(LOG, "比价结果【广告位ID：" + AdIds.SPLASH_AD_UNIT_ID
+                    + "，返回价格：" + comparePrice + "】");
             tpSplash.showAd(adContainer);
         } else {
             toast("Splash not ready");

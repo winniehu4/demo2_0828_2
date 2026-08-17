@@ -16,37 +16,68 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_load"
-            android:layout_width="0dp"
+        <!-- 第一行 -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
-            android:text="Load" />
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/btn_load"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Load" />
 
-        <Button
-            android:id="@+id/btn_check"
-            android:layout_width="0dp"
+            <Button
+                android:id="@+id/btn_check"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="isReady()" />
+
+        </LinearLayout>
+
+        <!-- 第二行 -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1.2"
-            android:text="isReady()" />
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_show"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="0.8"
-            android:text="Show" />
+            <Button
+                android:id="@+id/btn_show"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Show_top" />
+
+            <Button
+                android:id="@+id/btn_show_bottom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="Show_bottom" />
+
+        </LinearLayout>
+
     </LinearLayout>
-
     <FrameLayout
         android:id="@+id/ad_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_marginTop="16dp"
-        android:background="#EEEEEE" />
+        android:layout_marginBottom="12dp"
+        android:background="#E3F2FD" />
+
+    <FrameLayout
+        android:id="@+id/ad_container_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="#F2F2F2" />
 
 </LinearLayout>

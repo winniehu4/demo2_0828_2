@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "tradplus-ssp": {
+      "url": "https://mcp.tradplusad.com/sse",
+      "headers": {
+        "X-TradPlus-Bear": "25CD0090-B055-1C62-FA97-58CCA8A9BBB4",
+        "X-TradPlus-Secret": "3D43a23Ea2b22323"
+      }
+    }
+  }
+}

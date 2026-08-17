@@ -18,13 +18,15 @@ import com.tradplus.ads.base.common.TPDataManager;
 import com.tradplus.ads.base.network.TPSettingManager;
 import com.tradplus.ads.core.GlobalImpressionManager;
 import com.tradplus.ads.open.TradPlusSdk;
+import com.tradplus.meditaiton.utils.ImportSDKUtil;
+//import com.tradplus.meditaiton.utils.ImportSDKUtil;
 //import com.tradplus.meditaiton.utils.ImportSDKUtil;
 
 import sg.bigo.ads.BigoAdSdk;
 import sg.bigo.ads.api.AdConfig;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "demo";
+    private static final String TAG = "init";
     // Replace with your real TradPlus App ID from the TradPlus dashboard.
     private static final String TRADPLUS_APP_ID = "0513C4B3D2C5B3F8EB5CF572B79DF811";
 
@@ -63,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
 //全局关闭自动加载
 TPSettingManager.getInstance().setGlobalCloseAutoload(true);
 //设置测试设备id，初始化sdk前调用
-        TradPlusSdk.setTestCustomId("hwq_testDevice");
+       // TradPlusSdk.setTestCustomId("hwq_testDevice");
+        //初始化
         initTradPlusSdk();
 //开启tp内部日志
         //TPDataManager.getInstance().setDebugMode(true);
