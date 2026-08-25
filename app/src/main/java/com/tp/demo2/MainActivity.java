@@ -30,13 +30,15 @@ public class MainActivity extends AppCompatActivity {
     // Replace with your real TradPlus App ID from the TradPlus dashboard.
     private static final String TRADPLUS_APP_ID = "0513C4B3D2C5B3F8EB5CF572B79DF811";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         //测试工具
-        //ImportSDKUtil.getInstance().showTestTools(this, TRADPLUS_APP_ID);
+        ImportSDKUtil.getInstance().showTestTools(this, TRADPLUS_APP_ID);
 
         Log.v(TAG, "MainActivity onCreate");
        // 👇 ===================== 【Bigo SDK 全局初始化】=====================
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
 TPSettingManager.getInstance().setGlobalCloseAutoload(true);
 //设置测试设备id，初始化sdk前调用
        // TradPlusSdk.setTestCustomId("hwq_testDevice");
+
+        Log.v(TAG, "TradPlus SDK init jhbnjhbjhbjh");
         //初始化
         initTradPlusSdk();
 //开启tp内部日志

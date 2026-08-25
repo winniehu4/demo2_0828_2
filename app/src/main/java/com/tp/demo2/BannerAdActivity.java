@@ -158,11 +158,5 @@ public class BannerAdActivity extends AppCompatActivity {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (tpBanner != null) {
-            tpBanner.onDestroy();
-        }
-    }
+
 }

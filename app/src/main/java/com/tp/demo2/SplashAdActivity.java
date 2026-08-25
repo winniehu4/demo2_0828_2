@@ -114,11 +114,5 @@ public class SplashAdActivity extends AppCompatActivity {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (tpSplash != null) {
-            tpSplash.onDestroy();
-        }
-    }
+
 }

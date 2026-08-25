@@ -191,7 +191,7 @@ public class InterstitialAdActivity extends AppCompatActivity {
 
     private void showInterstitial() {
 
-        if (tpInterstitial != null && tpInterstitial.isReady()) {
+      /*  if (tpInterstitial != null && tpInterstitial.isReady()) {
 
             // 展示前先调用高阶比价接口
             testMixPrice();
@@ -201,18 +201,15 @@ public class InterstitialAdActivity extends AppCompatActivity {
 
         } else {
             toast("Interstitial not ready");
-        }
+        }*/
+
+        tpInterstitial.showAd(InterstitialAdActivity.this, null);
+
     }
 
     private void toast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (tpInterstitial != null) {
-            tpInterstitial.onDestroy();
-        }
-    }
+
 }

@@ -64,7 +64,7 @@ public final class EveryLayerLoadListenerHelper {
 
             @Override
             public void onBiddingEnd(TPAdInfo tpAdInfo, TPAdError tpAdError) {
-                Log.v(LOG, "onBiddingEnd【广告源：" + tpAdInfo.adSourceName + "，中介组id：" + tpAdInfo.segmentId + "，code :: " +
+                Log.v(LOG, "onBiddingEnd【广告源：" + tpAdInfo.adSourceName + "，中介组id：" + tpAdInfo.segmentId + "，code :: " + "，ecpm：" + tpAdInfo.ecpm +
                         tpAdError.getErrorCode() + " , Msg :: " + tpAdError.getErrorMsg() + "】");
 
             }

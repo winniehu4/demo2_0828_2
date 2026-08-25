@@ -32,8 +32,7 @@ public class BigoInterstitialC2SAdapter extends TPInterstitialAdapter {
     private TPBaseAdapter.OnC2STokenListener mOnC2STokenListener;
     private InterstitialAd mInterstitialAd;
     private String mPlacementId;
-    // 标记：是否已完成C2S竞价
-    private boolean isBiddingSuccess = false;
+    private boolean isBiddingLoaded = false;
 
 
 
@@ -90,8 +89,11 @@ public class BigoInterstitialC2SAdapter extends TPInterstitialAdapter {
             return;
         }
 
-        // ============== 4. 竞价成功 ==============
-        if (isBiddingSuccess && mInterstitialAd != null) {
+        requestBigoAdForBidding(context);
+    }
+
+    private void requestBigoAdForBidding(Context context) {
+        if (mOnC2STokenListener != null && isBiddingLoaded) {
             setAdInteractionListener();
             if (mLoadAdapterListener != null) {
                 mLoadAdapterListener.loadAdapterLoaded(null);
@@ -99,12 +101,6 @@ public class BigoInterstitialC2SAdapter extends TPInterstitialAdapter {
             return;
         }
 
-        // ============== 5. 发起广告请求==============
-        requestBigoAdForBidding(context);
-    }
-
-    // ======================== 请求广告+竞价 ========================
-    private void requestBigoAdForBidding(Context context) {
         Log.v(TAG,"进入了requestBigoAdForBidding(Context context)，发起Bigo广告请求");
 
         InterstitialAdRequest request = new InterstitialAdRequest.Builder()
@@ -156,17 +152,7 @@ public class BigoInterstitialC2SAdapter extends TPInterstitialAdapter {
                         if (mOnC2STokenListener != null) {
                             mOnC2STokenListener.onC2SBiddingResult(ecpmMap);
                         }
-
-
-
-
-
-
-                        // 标记竞价成功
-                        isBiddingSuccess = true;
-
-                        // 竞价成功后，重新调用loadCustomAd回调加载成功
-                        loadCustomAd(context, null, null);
+                        isBiddingLoaded = true;
                     }
                 })
                 .build();
@@ -254,7 +240,7 @@ public class BigoInterstitialC2SAdapter extends TPInterstitialAdapter {
             mInterstitialAd.destroy();
             mInterstitialAd = null;
         }
-        isBiddingSuccess = false;
+        isBiddingLoaded = false;
         super.clean();
     }
 

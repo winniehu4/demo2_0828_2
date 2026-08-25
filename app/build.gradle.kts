@@ -36,21 +36,24 @@ android {
 }
 
 dependencies {
+
     // TradPlus
    implementation("com.tradplusad:tradplus:16.4.0.1")
-// GMA Next Gen
+/*// GMA Next Gen
     implementation("com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:1.0.1")
-    implementation("com.tradplusad:tradplus-gma-nextgen:2.16.4.10.1")
+    implementation("com.tradplusad:tradplus-gma-nextgen:2.16.4.10.1")*/
 
-    /*// Admob
+    // Admob
     implementation("com.google.android.gms:play-services-ads:25.4.0")
-    implementation("com.tradplusad:tradplus-googlex:2.16.4.10.1")*/
+    implementation("com.tradplusad:tradplus-googlex:2.16.4.10.1")
 // Meta
     implementation("com.facebook.android:audience-network-sdk:6.21.0")
     implementation("com.tradplusad:tradplus-facebook:1.16.4.0.1")
 // Pangle
     implementation("com.tradplusad:tradplus-pangle:19.16.4.0.1")
     implementation("com.pangle.global:pag-sdk:8.1.0.3")
+
+
 // Inmobi
     implementation("com.tradplusad:tradplus-inmobix:23.16.4.0.1")
     implementation("com.inmobi.monetization:inmobi-ads-kotlin:11.3.0")
@@ -84,53 +87,32 @@ dependencies {
 // Bigo
     implementation("com.bigossp:bigo-ads:5.9.0")
     implementation("com.tradplusad:tradplus-bigo:57.16.4.0.1")
-// Cross Promotion
-    implementation("com.tradplusad:tradplus-crosspromotion:27.16.0.0.1")
-// TP Exchange
-// 请注意保持与主包版本同步更新
-    implementation("com.google.code.gson:gson:2.8.6")
-    implementation("com.tradplusad:tp_exchange:40.16.0.0.1")
-
-/*    // MAX
-    implementation(files("libs/max_ads_51.15.9.0.1.aar"))
-    implementation("com.applovin:applovin-sdk:13.6.2")
-    implementation("com.google.android.gms:play-services-ads-identifier:17.0.0")*/
-
 // Applovin
     implementation("com.applovin:applovin-sdk:13.6.3")
     implementation("com.tradplusad:tradplus-applovin:9.16.4.0.1")
     implementation("com.google.android.gms:play-services-ads-identifier:18.2.0")
-
-
-    // Start.io
-    implementation("com.startapp:inapp-sdk:5.3.0")
-    implementation("com.tradplusad:tradplus-startapp:28.16.1.0.1")
+// TP Exchange
+// 请注意保持与主包版本同步更新
+    implementation("com.google.code.gson:gson:2.8.6")
+    implementation("com.tradplusad:tp_exchange:40.16.4.0.1")
 
 //比价
-    implementation(files("libs/compare_price-release.aar"))
+    //implementation(files("libs/compare_price-release.aar"))
+// zMaticoo
+    implementation("com.tradplusad:tradplus-zmaticoo:55.16.4.0.1")
+    implementation("io.github.maticooads:maticoo-android-sdk:2.0.6.0")
+
+// TaurusX
+    implementation("com.taurusx.tax:ads:1.18.3")
+    implementation("com.tradplusad:tradplus-taurusx:74.16.5.0.1")
+// Columbus
+// columbus needs Minimum SDK version 19+; Compile SDK version 34+.
+    implementation("com.tradplusad:tradplus-columbus:76.16.5.0.1")
+    implementation("com.mi.ads:columbus-sdk:4.0.9.0")
 
 
-
-  /*  // Sigmob
-    implementation("com.tradplusad:tradplus-sigmob:21.16.2.0.1")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("com.tradplusad:sigmob-ads:4.25.23")
-    implementation("com.tradplusad:sigmob-ads-common:2.0.4")*/
-/*
-// Magnite
-    implementation("com.magnite.sdk:ads-sdk:0.0.13")
-    implementation("com.tradplusad:tradplus-magnite:83.16.3.0.1")
-//google ump
-    implementation("com.google.android.ump:user-messaging-platform:2.1.0")
-    // Huawei
-    implementation("com.tradplusad:tradplus-huawei:41.16.5.0.1")
-    implementation("com.huawei.hms:ads-lite:13.4.78.301")
-*/
-
-
-
-    // KwaiAds
-    implementation("com.tradplusad:tradplus-kwai:75.16.5.0.1")
+// KwaiAds
+    implementation("com.tradplusad:tradplus-kwai:75.16.7.0.1")
     implementation("io.github.kwainetwork:adImpl:1.2.21")
     implementation("io.github.kwainetwork:adApi:1.2.21")
 // media3-exoplayer适配版本为「1.0.0-alpha01 - 1.2.0」
@@ -143,13 +125,21 @@ dependencies {
 //最低支持play-services-ads-identifier:18.0.1
     implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
 
-// TaurusX
-    implementation("com.taurusx.tax:ads:1.18.3")
-    implementation("com.tradplusad:tradplus-taurusx:74.16.5.0.1")
-// Columbus
-// columbus needs Minimum SDK version 19+; Compile SDK version 34+.
-    implementation("com.tradplusad:tradplus-columbus:76.16.5.0.1")
-    implementation("com.mi.ads:columbus-sdk:4.0.9.0")
+/*// Tapjoy
+    implementation("com.tapjoy:tapjoy-android-sdk:13.1.2@aar")
+    implementation("com.tradplusad:tradplus-tapjoy:6.16.6.10.1")
+    implementation("com.google.android.gms:play-services-ads-identifier:17.0.0")*/
+// Criteo
+    implementation("com.criteo.publisher:criteo-publisher-sdk:5.0.2")
+    implementation("com.tradplusad:tradplus-criteo:32.16.6.10.1")
+    implementation("com.google.android.gms:play-services-ads-identifier:17.0.0")
+    implementation("com.google.android.gms:play-services-base:17.4.0")
+// VK Ads
+    implementation("com.my.target:mytarget-sdk:5.47.1")
+    implementation("com.tradplusad:tradplus-mytarget:33.16.6.10.1")
+// Ogury
+    implementation("co.ogury:ogury-sdk:6.2.2")
+    implementation("com.tradplusad:tradplus-ogury:34.16.6.10.1")
 
 
 // UnityAds
@@ -160,10 +150,12 @@ dependencies {
 
         // ... other project dependencies
         //TradPlus Tools
-    implementation("com.tradplusad:tradplus-tool:1.1.7")
-    implementation("androidx.recyclerview:recyclerview:1.2.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    //implementation("com.tradplusad:tradplus-tool:1.1.7")
+   /* implementation("androidx.recyclerview:recyclerview:1.2.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")*/
 
+
+    implementation(fileTree("libs") { include("*.aar") })
 
     implementation(libs.appcompat)
     implementation(libs.material)
