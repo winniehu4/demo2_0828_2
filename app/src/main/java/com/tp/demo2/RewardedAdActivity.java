@@ -111,39 +111,46 @@ public class RewardedAdActivity extends AppCompatActivity implements View.OnClic
                                 + tpAdInfo.true_adunit_id
                                 + "，ecpm:"
                                 + tpAdInfo.ecpm
-                                +"】");
+                                +",ecpmPrecision："+tpAdInfo.ecpmPrecision
+                                +", isBidding=" + tpAdInfo.isBiddingNetwork+
+                                "】");
 
                 toast("Rewarded impression");
             }
 
             @Override
             public void onAdClicked(TPAdInfo tpAdInfo) {
+
+                Log.v(LOG,"onAdClicked");
                 toast("Rewarded clicked");
             }
 
             @Override
             public void onAdClosed(TPAdInfo tpAdInfo) {
+                Log.v(LOG,"onAdClosed");
+
                 toast("Rewarded closed");
             }
 
             @Override
             public void onAdReward(TPAdInfo tpAdInfo) {
                 Log.v(LOG,"onAdReward");
-                toast("Reward callback received");
+                toast("onAdReward");
             }
 
             @Override
             public void onAdVideoStart(TPAdInfo tpAdInfo) {
-
+                Log.v(LOG,"onAdVideoStart");
             }
 
             @Override
             public void onAdVideoEnd(TPAdInfo tpAdInfo) {
-
+                Log.v(LOG,"onAdVideoEnd");
             }
 
             @Override
             public void onAdVideoError(TPAdInfo tpAdInfo, TPAdError error) {
+                Log.v(LOG,"onAdVideoError"+error.getErrorMsg());
                 toast("Rewarded video error: " + error.getErrorMsg());
             }
         });

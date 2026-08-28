@@ -38,14 +38,17 @@ android {
 dependencies {
 
     // TradPlus
-   implementation("com.tradplusad:tradplus:16.4.0.1")
+   implementation("com.tradplusad:tradplus:16.6.0.1")
+
+    /*// Admob
+    implementation("com.google.android.gms:play-services-ads:25.4.0")
+    implementation("com.tradplusad:tradplus-googlex:2.16.6.20.1")*/
 /*// GMA Next Gen
     implementation("com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:1.0.1")
     implementation("com.tradplusad:tradplus-gma-nextgen:2.16.4.10.1")*/
-
-    // Admob
-    implementation("com.google.android.gms:play-services-ads:25.4.0")
-    implementation("com.tradplusad:tradplus-googlex:2.16.4.10.1")
+// GMA Next Gen
+    implementation("com.google.android.libraries.ads.mobile.sdk:ads-mobile-sdk:1.2.1")
+    implementation("com.tradplusad:tradplus-gma-nextgen:2.16.6.10.1")
 // Meta
     implementation("com.facebook.android:audience-network-sdk:6.21.0")
     implementation("com.tradplusad:tradplus-facebook:1.16.4.0.1")
@@ -73,12 +76,18 @@ dependencies {
     implementation("com.squareup.okio:okio:3.7.0")
     implementation("androidx.media3:media3-exoplayer:1.4.1")
 // Mintegral
-    implementation("com.tradplusad:tradplus-mintegralx_overseas:18.16.4.0.1")
+    implementation("com.tradplusad:tradplus-mintegralx_overseas:18.16.6.0.1")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
     implementation("com.mbridge.msdk.oversea:mbridge_android_sdk:17.1.61")
+
+    // Moloco
+    implementation("com.moloco.sdk:moloco-sdk:4.10.1")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20")
+    implementation("com.tradplusad:tradplus-moloco:82.16.6.0.1")
+
 // Liftoff
-    implementation("com.tradplusad:tradplus-vunglex:7.16.4.0.1")
-    implementation("com.vungle:vungle-ads:7.7.4")
+    implementation("com.tradplusad:tradplus-vunglex:7.16.6.0.1")
+    implementation("com.vungle:vungle-ads:7.7.6")
 // Yandex
     implementation("com.yandex.android:mobileads:8.1.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.25")
@@ -129,30 +138,14 @@ dependencies {
     implementation("com.tapjoy:tapjoy-android-sdk:13.1.2@aar")
     implementation("com.tradplusad:tradplus-tapjoy:6.16.6.10.1")
     implementation("com.google.android.gms:play-services-ads-identifier:17.0.0")*/
-// Criteo
-    implementation("com.criteo.publisher:criteo-publisher-sdk:5.0.2")
-    implementation("com.tradplusad:tradplus-criteo:32.16.6.10.1")
-    implementation("com.google.android.gms:play-services-ads-identifier:17.0.0")
-    implementation("com.google.android.gms:play-services-base:17.4.0")
-// VK Ads
-    implementation("com.my.target:mytarget-sdk:5.47.1")
-    implementation("com.tradplusad:tradplus-mytarget:33.16.6.10.1")
-// Ogury
-    implementation("co.ogury:ogury-sdk:6.2.2")
-    implementation("com.tradplusad:tradplus-ogury:34.16.6.10.1")
-
-
-// UnityAds
-    implementation("com.tradplusad:tradplus-unity:5.16.4.0.1")
-    implementation("com.unity3d.ads:unity-ads:4.18.1")
 
 
 
         // ... other project dependencies
         //TradPlus Tools
     //implementation("com.tradplusad:tradplus-tool:1.1.7")
-   /* implementation("androidx.recyclerview:recyclerview:1.2.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")*/
+    implementation("androidx.recyclerview:recyclerview:1.2.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
 
 
     implementation(fileTree("libs") { include("*.aar") })

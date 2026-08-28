@@ -27,11 +27,11 @@
             android:value="true"/>
 
         <!-- 测试ID：ca-app-pub-3940256099942544~3347511713 -->
-        <meta-data
+  <!--      <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-6476839011381297~3641549493"/>
         <meta-data android:name="com.google.android.gms.ads.flag.NATIVE_AD_DEBUGGER_ENABLED"
-            android:value="false" />
+            android:value="false" />-->
 
 
         <activity

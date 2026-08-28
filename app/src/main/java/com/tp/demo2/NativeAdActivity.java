@@ -88,7 +88,7 @@ public class NativeAdActivity extends AppCompatActivity {
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
-                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "，广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，ecpm：" + tpAdInfo.ecpm + "】");
+                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "，广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，ecpm：" + tpAdInfo.ecpm + ",ecpmPrecision："+tpAdInfo.ecpmPrecision+", isBidding=" + tpAdInfo.isBiddingNetwork+"】");
                 toast("Native impression");
             }
 

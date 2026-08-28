@@ -37,8 +37,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        //测试工具
-        ImportSDKUtil.getInstance().showTestTools(this, TRADPLUS_APP_ID);
+
 
         Log.v(TAG, "MainActivity onCreate");
        // 👇 ===================== 【Bigo SDK 全局初始化】=====================
@@ -73,7 +72,7 @@ TPSettingManager.getInstance().setGlobalCloseAutoload(true);
         //初始化
         initTradPlusSdk();
 //开启tp内部日志
-        //TPDataManager.getInstance().setDebugMode(true);
+        TPDataManager.getInstance().setDebugMode(true);
 
         setupMenu();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -89,6 +88,8 @@ TPSettingManager.getInstance().setGlobalCloseAutoload(true);
                 @Override
                 public void onInitSuccess() {
                     Log.d(TAG, "TradPlus SDK init success");
+                    //测试工具
+                    //ImportSDKUtil.getInstance().showTestTools(MainActivity.this, TRADPLUS_APP_ID);
 
                     //全局展示回调
                     TradPlusSdk.setGlobalImpressionListener(new GlobalImpressionManager.GlobalImpressionListener() {
@@ -110,11 +111,14 @@ TPSettingManager.getInstance().setGlobalCloseAutoload(true);
         Button btnInterstitial = findViewById(R.id.btn_interstitial);
         Button btnReward = findViewById(R.id.btn_reward);
         Button btnSplash = findViewById(R.id.btn_splash);
+        Button btnTestTools = findViewById(R.id.btn_test_tools);
 
         btnBanner.setOnClickListener(v -> startActivity(new Intent(this, BannerAdActivity.class)));
         btnNative.setOnClickListener(v -> startActivity(new Intent(this, NativeAdActivity.class)));
         btnInterstitial.setOnClickListener(v -> startActivity(new Intent(this, InterstitialAdActivity.class)));
         btnReward.setOnClickListener(v -> startActivity(new Intent(this, RewardedAdActivity.class)));
         btnSplash.setOnClickListener(v -> startActivity(new Intent(this, SplashAdActivity.class)));
+        btnTestTools.setOnClickListener(v ->
+                ImportSDKUtil.getInstance().showTestTools(this, TRADPLUS_APP_ID));
     }
 }

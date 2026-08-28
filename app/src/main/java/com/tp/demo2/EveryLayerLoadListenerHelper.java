@@ -39,7 +39,7 @@ public final class EveryLayerLoadListenerHelper {
 
             @Override
             public void oneLayerLoaded(TPAdInfo tpAdInfo) {
-                Log.v(LOG, "oneLayerLoaded【广告源：" + tpAdInfo.adSourceName + ",广告源id:"+tpAdInfo.adSourceId+"，中介组id：" + tpAdInfo.segmentId  +",ecpm:"+tpAdInfo.ecpm+ "】");
+                Log.v(LOG, "oneLayerLoaded【广告源：" + tpAdInfo.adSourceName + ",广告源id:"+tpAdInfo.adSourceId+"，中介组id：" + tpAdInfo.segmentId  +",ecpm:"+tpAdInfo.ecpm+ "】" +",ecpmPrecision:"+tpAdInfo.ecpmPrecision);
 
             }
 

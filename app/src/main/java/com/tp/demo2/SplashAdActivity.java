@@ -2,6 +2,7 @@ package com.tp.demo2;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -58,7 +59,7 @@ public class SplashAdActivity extends AppCompatActivity {
 
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
-                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，ecpm：" + tpAdInfo.ecpm + "】");
+                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  "广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，ecpm：" + tpAdInfo.ecpm + ",ecpmPrecision："+tpAdInfo.ecpmPrecision+", isBidding=" + tpAdInfo.isBiddingNetwork+"】");
 
 
 
@@ -83,6 +84,7 @@ public class SplashAdActivity extends AppCompatActivity {
             @Override
             public void onAdShowFailed(TPAdInfo tpAdInfo, TPAdError error) {
                 toast("Splash show failed: " + error.getErrorMsg());
+                Log.v(LOG,"Splash show failed: " + error.getErrorCode() + error.getErrorMsg());
             }
         });
         tpSplash.setAllAdLoadListener(
@@ -102,8 +104,9 @@ public class SplashAdActivity extends AppCompatActivity {
     private void showSplash() {
         if (tpSplash != null && tpSplash.isReady()) {
             double comparePrice = recursiveComparePrice(AdIds.SPLASH_AD_UNIT_ID);
-            Log.v(LOG, "比价结果【广告位ID：" + AdIds.SPLASH_AD_UNIT_ID
-                    + "，返回价格：" + comparePrice + "】");
+
+            Log.v(LOG, "比价结果【广告位ID：" + AdIds.SPLASH_AD_UNIT_ID + "，返回价格：" + comparePrice + "】");
+            adContainer.setVisibility(View.GONE);
             tpSplash.showAd(adContainer);
         } else {
             toast("Splash not ready");

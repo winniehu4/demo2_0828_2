@@ -88,7 +88,7 @@ public class InterstitialAdActivity extends AppCompatActivity {
             @Override
             public void onAdImpression(TPAdInfo tpAdInfo) {
 
-                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  ",广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，true_adunit_id：" + tpAdInfo.true_adunit_id + ",ECPM:"+tpAdInfo.ecpm+"】");
+                Log.v(LOG, "onAdImpression【广告源："+ tpAdInfo.adSourceName +  ",广告源ID："+ tpAdInfo.adSourceId+  "，广告类型：" + tpAdInfo.format +  "，tpAdUnitId：" + tpAdInfo.tpAdUnitId + "，中介组id：" + tpAdInfo.segmentId  + "，true_adunit_id：" + tpAdInfo.true_adunit_id + ",ECPM:"+tpAdInfo.ecpm+"】"+",ecpmPrecision"+tpAdInfo.ecpmPrecision+", isBidding=" + tpAdInfo.isBiddingNetwork);
 
 
                 toast("Interstitial impression");
